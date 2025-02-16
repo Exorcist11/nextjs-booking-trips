@@ -1,7 +1,15 @@
 "use client";
 import CustomTable from "@/components/CustomTable";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { IUserResponse } from "@/constants/interface";
+import { dropDownMenus } from "@/lib/dropdownMenu";
 import { getAllUsers } from "@/services/users";
+import { Ellipsis } from "lucide-react";
 
 import React from "react";
 
@@ -32,7 +40,7 @@ export default function page() {
           return (pageIndex - 1) * pageSize + row.index + 1;
         },
         meta: {
-          cellClassName: "py-5 ",
+          cellClassName: "py-5 w-[5%]",
         },
       },
       {
@@ -43,7 +51,7 @@ export default function page() {
           return row?.original?.fullName;
         },
         meta: {
-          cellClassName: "py-5 ",
+          cellClassName: "py-5 w-[25%] ",
         },
       },
       {
@@ -54,18 +62,44 @@ export default function page() {
           return row?.original?.email;
         },
         meta: {
-          cellClassName: "py-5 ",
+          cellClassName: "py-5 w-[30%]",
         },
       },
       {
         header: "Phone Number",
         id: "phoneNumber",
         accessorKey: "phoneNumber",
+        // cell: ({ row }: any) => {
+        //   return row?.original?.phoneNumber;
+        // },
+        meta: {
+          cellClassName: "py-5 w-[30%]",
+        },
+      },
+      {
+        header: "Acoes",
+        id: "_id",
+        accessorKey: "action",
         cell: ({ row }: any) => {
-          return row?.original?.phoneNumber;
+          return (
+            <div>
+              <DropdownMenu>
+                <DropdownMenuTrigger className="bg-slate-200 py-1 px-2 rounded-lg focus:outline-none focus:ring-0 focus:ring-transparent focus:ring-offset-0">
+                  <Ellipsis size={16} />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  {dropDownMenus.map((menu, index) => (
+                    <DropdownMenuItem key={index} className="hover:cursor-pointer">
+                      {menu.icon} {menu.title}
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          );
         },
         meta: {
-          cellClassName: "py-5 ",
+          cellClassName: "py-5 w-[10%]",
         },
       },
     ],

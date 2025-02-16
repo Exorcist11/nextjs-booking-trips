@@ -1,11 +1,10 @@
-'use client';
+"use client";
 
 import Header from "@/components/HeaderAdmin";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
-import { FaBus, FaCalendarAlt, FaUser, FaRegFlag } from "react-icons/fa";
-import { MdOutlineDashboard } from "react-icons/md";
+import { BusFront, Calendar, Users, MapPinned, LayoutDashboard } from "lucide-react";
 
 export default function AdminLayout({
   children,
@@ -14,11 +13,11 @@ export default function AdminLayout({
 }) {
   const pathname = usePathname();
   const menus = [
-    { link: "/", title: "Trang chủ", icon: <MdOutlineDashboard /> },
-    { link: "/cars", title: "Xe", icon: <FaBus /> },
-    { link: "/trips", title: "Chuyến đi", icon: <FaRegFlag /> },
-    { link: "/users", title: "Tài khoản", icon: <FaUser /> },
-    { link: "/bookings", title: "Đặt lịch", icon: <FaCalendarAlt /> },
+    { link: "/", title: "Trang chủ", icon: <LayoutDashboard size={18} /> },
+    { link: "/cars", title: "Xe", icon: <BusFront size={18} /> },
+    { link: "/trips", title: "Chuyến đi", icon: <MapPinned size={18} /> },
+    { link: "/users", title: "Tài khoản", icon: <Users size={18} /> },
+    { link: "/bookings", title: "Đặt lịch", icon: <Calendar size={18} /> },
   ];
   return (
     <div className="flex flex-col h-screen">

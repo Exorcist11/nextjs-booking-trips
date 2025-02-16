@@ -125,7 +125,7 @@ const CustomTable = <TData, TValue>(props: CustomTableProps<TData, TValue>) => {
           wrapperClassName
         )}
       >
-        <TableHeader className={cn("sticky top-0 h-16 z-10", tableHeaderClass)}>
+        <TableHeader className={cn("sticky top-0 h-16 z-10 bg-[#F6F8FC]", tableHeaderClass)}>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
