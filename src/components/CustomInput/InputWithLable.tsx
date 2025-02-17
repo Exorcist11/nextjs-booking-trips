@@ -10,14 +10,23 @@ interface InputProps {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   className?: string;
   isRequired?: boolean;
+  value?: string;
 }
 
 export function InputWithLabel(props: InputProps) {
-  const { title, type, id, placeholder, onChange, className, isRequired } =
-    props;
+  const {
+    title,
+    type,
+    id,
+    placeholder,
+    onChange,
+    className,
+    isRequired,
+    value,
+  } = props;
   return (
     <div className="grid w-full items-center gap-1.5">
-      <Label htmlFor={id}>
+      <Label htmlFor={id} className="font-bold">
         {title}&nbsp;
         {isRequired && <span className="text-red-500">*</span>}
       </Label>
@@ -27,6 +36,7 @@ export function InputWithLabel(props: InputProps) {
         placeholder={placeholder}
         onChange={onChange}
         className={cn(className, "focus-visible:ring-transparent ")}
+        value={value}
       />
     </div>
   );

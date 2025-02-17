@@ -1,22 +1,32 @@
 "use client";
+
+import React from "react";
+import InputWithIcon from "@/components/CustomInput/InputWithIcon";
 import CustomTable from "@/components/CustomTable";
+import PaginationCustom from "@/components/CustomTable/PaginationCustom";
+import UserActionDialog from "@/components/Dialog/UserActionDialog";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+
 import { IUserResponse } from "@/constants/interface";
 import { dropDownMenus } from "@/lib/dropdownMenu";
 import { getAllUsers } from "@/services/users";
-import { Ellipsis } from "lucide-react";
-
-import React from "react";
+import { Ellipsis, Plus, Search } from "lucide-react";
 
 export default function page() {
   const [users, setUsers] = React.useState<IUserResponse>();
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
+  const [open, setOpen] = React.useState<boolean>(false);
+  const [type, setType] = React.useState<string>("Add");
+  const [userId, setUserId] = React.useState<string>("");
+
   const getUsers = async () => {
+    setIsLoading(true);
     try {
       const response = await getAllUsers();
       setUsers(response);
@@ -26,6 +36,13 @@ export default function page() {
       setIsLoading(false);
     }
   };
+
+  const handleActionClick = (id: string, action: string) => {
+    setType(action);
+    setOpen(true);
+    setUserId(id);
+  };
+
   React.useEffect(() => {
     getUsers();
   }, []);
@@ -89,7 +106,13 @@ export default function page() {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                   {dropDownMenus.map((menu, index) => (
-                    <DropdownMenuItem key={index} className="hover:cursor-pointer">
+                    <DropdownMenuItem
+                      key={index}
+                      className="hover:cursor-pointer"
+                      onClick={() =>
+                        handleActionClick(row?.original?._id, menu?.title)
+                      }
+                    >
                       {menu.icon} {menu.title}
                     </DropdownMenuItem>
                   ))}
@@ -107,18 +130,58 @@ export default function page() {
   );
 
   return (
-    <div>
-      <CustomTable
-        // onRowClick={(user) => {
-        //   setOpen(true);
-        //   setType("view");
-        //   setActiveData(user.id);
-        // }}
-        columns={columns}
-        data={users?.data || []}
-        isLoading={isLoading}
-        wrapperClassName="2xl:max-h-[66vh] xl:max-h-[57vh]"
-      />
+    <div className="flex flex-col gap-5">
+      <div className="flex items-center justify-between gap-5">
+        <h3 className="font-bold text-xl">
+          {/* All users <span className="text-gray-400">{users?.total}</span> */}
+        </h3>
+
+        <div className="flex items-center justify-end gap-5">
+          <InputWithIcon
+            Icon={Search}
+            placeholder="Tìm kiếm tên khách hàng"
+            className="w-[35%]"
+          />
+          <Button
+            onClick={() => {
+              setOpen(true);
+              setType("Add");
+            }}
+          >
+            <Plus color="#fff" /> Thêm mới
+          </Button>
+        </div>
+      </div>
+      <div className="flex gap-2 flex-col">
+        <CustomTable
+          // onRowClick={(user) => {
+          //   setOpen(true);
+          //   setType("view");
+          //   setActiveData(user.id);
+          // }}
+          columns={columns}
+          data={users?.data || []}
+          isLoading={isLoading}
+          wrapperClassName="2xl:max-h-[66vh] xl:max-h-[57vh]"
+        />
+
+        <PaginationCustom
+          pageIndex={users?.index || 1}
+          pageSize={users?.limit || 10}
+          totalCount={users?.total || 0}
+          onChangePage={() => getAllUsers()}
+        />
+      </div>
+
+      {open && type && (
+        <UserActionDialog
+          open={open}
+          setOpen={setOpen}
+          type={type}
+          userId={userId}
+          reload={getAllUsers}
+        />
+      )}
     </div>
   );
 }

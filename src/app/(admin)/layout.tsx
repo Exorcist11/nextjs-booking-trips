@@ -4,7 +4,18 @@ import Header from "@/components/HeaderAdmin";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
-import { BusFront, Calendar, Users, MapPinned, LayoutDashboard } from "lucide-react";
+import {
+  BusFront,
+  Calendar,
+  Users,
+  MapPinned,
+  LayoutDashboard,
+} from "lucide-react";
+interface MenuItem {
+  link: string;
+  title: string;
+  icon: React.ElementType;
+}
 
 export default function AdminLayout({
   children,
@@ -12,12 +23,12 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const menus = [
-    { link: "/", title: "Trang chủ", icon: <LayoutDashboard size={18} /> },
-    { link: "/cars", title: "Xe", icon: <BusFront size={18} /> },
-    { link: "/trips", title: "Chuyến đi", icon: <MapPinned size={18} /> },
-    { link: "/users", title: "Tài khoản", icon: <Users size={18} /> },
-    { link: "/bookings", title: "Đặt lịch", icon: <Calendar size={18} /> },
+  const menus: MenuItem[] = [
+    { link: "/", title: "Trang chủ", icon: LayoutDashboard },
+    { link: "/cars", title: "Xe", icon: BusFront },
+    { link: "/trips", title: "Chuyến đi", icon: MapPinned },
+    { link: "/users", title: "Tài khoản", icon: Users },
+    { link: "/bookings", title: "Đặt lịch", icon: Calendar },
   ];
   return (
     <div className="flex flex-col h-screen">
@@ -25,15 +36,17 @@ export default function AdminLayout({
         <Header />
       </header>
       <main className="flex flex-grow">
-        <nav className="w-1/6 border-r-2 py-4 px-6 flex flex-col gap-1 ">
+        <nav className="w-1/6 border-r py-4 px-6 flex flex-col gap-1 bg-[#f5f7f9]">
           {menus.map((menu, index) => (
             <Link key={index} href={menu.link}>
               <div
                 className={`flex items-center gap-3 cursor-pointer hover:bg-slate-200 p-2 rounded-md ${
-                  pathname === menu.link ? "bg-blue-100" : ""
+                  pathname === menu.link
+                    ? "bg-white shadow text-red-500 font-bold"
+                    : ""
                 }`}
               >
-                {menu.icon}
+                <menu.icon size={18}/>
                 <p>{menu.title}</p>
               </div>
             </Link>
