@@ -17,7 +17,7 @@ import { IUserResponse } from "@/constants/interface";
 import { dropDownMenus } from "@/lib/dropdownMenu";
 import { getAllUsers, IParamsGetUser } from "@/services/users";
 import { Ellipsis, Plus, Search } from "lucide-react";
-import PaginationCustom from "@/components/CustomTable/PaginationCustom";
+import TablePagination from "@/components/CustomTable/PaginationCustom";
 
 export default function page() {
   const [users, setUsers] = React.useState<IUserResponse>();
@@ -172,15 +172,15 @@ export default function page() {
           isLoading={isLoading}
           wrapperClassName="2xl:max-h-[66vh] xl:max-h-[57vh]"
         />
-{/* 
+
         {!isLoading && (
-          <PaginationCustom
+          <TablePagination
             pageIndex={users?.index || 1}
             pageSize={users?.limit || 10}
             totalCount={users?.total || 0}
             onChangePage={(pageIndex) => getUsers(pageIndex)}
           />
-        )} */}
+        )}
       </div>
 
       {open && type && (
