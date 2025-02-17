@@ -3,7 +3,7 @@
 import React from "react";
 import InputWithIcon from "@/components/CustomInput/InputWithIcon";
 import CustomTable from "@/components/CustomTable";
-import PaginationCustom from "@/components/CustomTable/PaginationCustom";
+
 import UserActionDialog from "@/components/Dialog/UserActionDialog";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,8 +15,9 @@ import {
 
 import { IUserResponse } from "@/constants/interface";
 import { dropDownMenus } from "@/lib/dropdownMenu";
-import { getAllUsers } from "@/services/users";
+import { getAllUsers, IParamsGetUser } from "@/services/users";
 import { Ellipsis, Plus, Search } from "lucide-react";
+import PaginationCustom from "@/components/CustomTable/PaginationCustom";
 
 export default function page() {
   const [users, setUsers] = React.useState<IUserResponse>();
@@ -24,11 +25,18 @@ export default function page() {
   const [open, setOpen] = React.useState<boolean>(false);
   const [type, setType] = React.useState<string>("Add");
   const [userId, setUserId] = React.useState<string>("");
+  // const [pageSize, setPageSize] = React.useState<number>(10);
 
-  const getUsers = async () => {
+  const getUsers = async (pageIndex: number) => {
     setIsLoading(true);
+    const params: IParamsGetUser = {
+      limit: 10,
+      index: pageIndex,
+      order: "fullName",
+      sort: "asc",
+    };
     try {
-      const response = await getAllUsers();
+      const response = await getAllUsers(params);
       setUsers(response);
     } catch (error) {
       console.error("Error fetching users: ", error);
@@ -44,7 +52,7 @@ export default function page() {
   };
 
   React.useEffect(() => {
-    getUsers();
+    getUsers(1);
   }, []);
   const columns: any[] = React.useMemo(
     () => [
@@ -164,13 +172,15 @@ export default function page() {
           isLoading={isLoading}
           wrapperClassName="2xl:max-h-[66vh] xl:max-h-[57vh]"
         />
-
-        <PaginationCustom
-          pageIndex={users?.index || 1}
-          pageSize={users?.limit || 10}
-          totalCount={users?.total || 0}
-          onChangePage={() => getAllUsers()}
-        />
+{/* 
+        {!isLoading && (
+          <PaginationCustom
+            pageIndex={users?.index || 1}
+            pageSize={users?.limit || 10}
+            totalCount={users?.total || 0}
+            onChangePage={(pageIndex) => getUsers(pageIndex)}
+          />
+        )} */}
       </div>
 
       {open && type && (
@@ -179,7 +189,7 @@ export default function page() {
           setOpen={setOpen}
           type={type}
           userId={userId}
-          reload={getAllUsers}
+          reload={getUsers}
         />
       )}
     </div>

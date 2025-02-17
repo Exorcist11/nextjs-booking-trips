@@ -2,7 +2,7 @@ import axiosInstance from "../api-services";
 import URL_PATHS from "../url-path";
 
 export interface IParamsGetUser {
-  fullName: string;
+  fullName?: string;
   limit: number;
   index: number;
   order: string;

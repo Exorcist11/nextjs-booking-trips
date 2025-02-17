@@ -26,7 +26,7 @@ interface UserDialogProps {
   setOpen: (open: boolean) => void;
   type: string;
   userId: string;
-  reload?: () => Promise<void>;
+  reload?: (pageIndex: number) => Promise<void>;
 }
 
 export default function UserActionDialog(props: UserDialogProps) {
@@ -85,7 +85,7 @@ export default function UserActionDialog(props: UserDialogProps) {
     } catch (error) {
       throw error;
     } finally {
-      reload && reload();
+      reload && reload(1);
       setOpen(false);
     }
   };
