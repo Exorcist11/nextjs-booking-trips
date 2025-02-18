@@ -32,22 +32,16 @@ export default function TablePagination({
   onChangePage,
   onChangePageSize,
 }: TablePaginationProps) {
-  const handlePageSizeChange = (newPageSize: string) => {
-    const newSize = +newPageSize;
-    if (onChangePageSize) {
-      onChangePageSize(newSize);
-    }
-  };
-
   const totalPages = Math.ceil(totalCount / pageSize);
-
   return (
     <div className="w-full flex items-center justify-between gap-2">
       <div className="flex items-center gap-2">
         <Label className="whitespace-nowrap">Rows per page:</Label>
         <Select
           value={pageSize.toString()}
-          onValueChange={handlePageSizeChange}
+          onValueChange={(value) => {
+            onChangePageSize?.(Number(value));
+          }}
         >
           <SelectTrigger className="w-[65px]">
             <SelectValue />
@@ -74,7 +68,7 @@ export default function TablePagination({
                 aria-label="Go to previous page"
                 size="icon"
                 variant="ghost"
-                disabled={pageIndex === 1}
+                disabled={pageIndex == 1}
                 onClick={() => onChangePage(Math.max(pageIndex - 1, 1))}
               >
                 <ChevronLeftIcon className="h-4 w-4" />

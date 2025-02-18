@@ -18,22 +18,25 @@ import { dropDownMenus } from "@/lib/dropdownMenu";
 import { getAllUsers, IParamsGetUser } from "@/services/users";
 import { Ellipsis, Plus, Search } from "lucide-react";
 import TablePagination from "@/components/CustomTable/PaginationCustom";
+import { debounce } from "lodash";
 
 export default function page() {
   const [users, setUsers] = React.useState<IUserResponse>();
+  const [search, setSearch] = React.useState<string>("");
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
   const [open, setOpen] = React.useState<boolean>(false);
   const [type, setType] = React.useState<string>("Add");
   const [userId, setUserId] = React.useState<string>("");
-  // const [pageSize, setPageSize] = React.useState<number>(10);
+  const [pageSize, setPageSize] = React.useState<number>(10);
 
   const getUsers = async (pageIndex: number) => {
     setIsLoading(true);
     const params: IParamsGetUser = {
-      limit: 10,
+      limit: pageSize,
       index: pageIndex,
       order: "fullName",
       sort: "asc",
+      fullName: search,
     };
     try {
       const response = await getAllUsers(params);
@@ -53,7 +56,7 @@ export default function page() {
 
   React.useEffect(() => {
     getUsers(1);
-  }, []);
+  }, [pageSize, search]);
   const columns: any[] = React.useMemo(
     () => [
       {
@@ -149,6 +152,9 @@ export default function page() {
             Icon={Search}
             placeholder="Tìm kiếm tên khách hàng"
             className="w-[35%]"
+            onChange={debounce((e: React.ChangeEvent<HTMLInputElement>) => {
+              setSearch(e.target.value);
+            }, 1000)}
           />
           <Button
             onClick={() => {
@@ -162,11 +168,6 @@ export default function page() {
       </div>
       <div className="flex gap-2 flex-col">
         <CustomTable
-          // onRowClick={(user) => {
-          //   setOpen(true);
-          //   setType("view");
-          //   setActiveData(user.id);
-          // }}
           columns={columns}
           data={users?.data || []}
           isLoading={isLoading}
@@ -176,9 +177,10 @@ export default function page() {
         {!isLoading && (
           <TablePagination
             pageIndex={users?.index || 1}
-            pageSize={users?.limit || 10}
+            pageSize={users?.limit || pageSize}
             totalCount={users?.total || 0}
             onChangePage={(pageIndex) => getUsers(pageIndex)}
+            onChangePageSize={(pageSize) => setPageSize(pageSize)}
           />
         )}
       </div>

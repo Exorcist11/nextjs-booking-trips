@@ -203,11 +203,13 @@ export default function UserActionDialog(props: UserDialogProps) {
               />
 
               <DialogFooter className="w-full flex flex-row sm:justify-between">
-                <Button type="button" variant={"destructive"}>
-                  <Trash />
-                  Xóa
-                </Button>
-                <div className="flex gap-2 items-center justify-end">
+                {type !== "Add" && (
+                  <Button type="button" variant={"destructive"}>
+                    <Trash />
+                    Xóa
+                  </Button>
+                )}
+                <div className="flex gap-2 items-center justify-end w-full">
                   <Button type="reset" variant={"outline"}>
                     Hủy bỏ
                   </Button>
