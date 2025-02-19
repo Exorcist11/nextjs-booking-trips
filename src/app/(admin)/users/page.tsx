@@ -3,22 +3,14 @@
 import React from "react";
 import InputWithIcon from "@/components/CustomInput/InputWithIcon";
 import CustomTable from "@/components/CustomTable";
-
 import UserActionDialog from "@/components/Dialog/UserActionDialog";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-
 import { IUserResponse } from "@/constants/interface";
-import { dropDownMenus } from "@/lib/dropdownMenu";
 import { getAllUsers, IParamsGetUser } from "@/services/users";
-import { Ellipsis, Plus, Search } from "lucide-react";
+import { Plus, Search } from "lucide-react";
 import TablePagination from "@/components/CustomTable/PaginationCustom";
 import { debounce } from "lodash";
+import ActionClick from "@/components/ActionClick";
 
 export default function page() {
   const [users, setUsers] = React.useState<IUserResponse>();
@@ -112,24 +104,11 @@ export default function page() {
         cell: ({ row }: any) => {
           return (
             <div>
-              <DropdownMenu>
-                <DropdownMenuTrigger className="bg-slate-200 py-1 px-2 rounded-lg focus:outline-none focus:ring-0 focus:ring-transparent focus:ring-offset-0">
-                  <Ellipsis size={16} />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  {dropDownMenus.map((menu, index) => (
-                    <DropdownMenuItem
-                      key={index}
-                      className="hover:cursor-pointer"
-                      onClick={() =>
-                        handleActionClick(row?.original?._id, menu?.title)
-                      }
-                    >
-                      {menu.icon} {menu.title}
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <ActionClick
+                onMenuClick={(action) =>
+                  handleActionClick(row?.original?._id, action)
+                }
+              />
             </div>
           );
         },

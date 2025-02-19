@@ -1,20 +1,15 @@
 "use client";
+import ActionClick from "@/components/ActionClick";
 import InputWithIcon from "@/components/CustomInput/InputWithIcon";
 import CustomTable from "@/components/CustomTable";
 import TablePagination from "@/components/CustomTable/PaginationCustom";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { ICarResponse } from "@/constants/interface";
-import { dropDownMenus } from "@/lib/dropdownMenu";
+import {} from "@/lib/dropdownMenu";
 import { getAllCars, IParamsGetCars } from "@/services/cars";
 import toastifyUtils from "@/utils/toastify";
 import { debounce } from "lodash";
-import { Ellipsis, Plus, Search } from "lucide-react";
+import { Plus, Search } from "lucide-react";
 import React from "react";
 
 export default function page() {
@@ -121,24 +116,11 @@ export default function page() {
         cell: ({ row }: any) => {
           return (
             <div>
-              <DropdownMenu>
-                <DropdownMenuTrigger className="bg-slate-200 py-1 px-2 rounded-lg focus:outline-none focus:ring-0 focus:ring-transparent focus:ring-offset-0">
-                  <Ellipsis size={16} />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  {dropDownMenus.map((menu, index) => (
-                    <DropdownMenuItem
-                      key={index}
-                      className="hover:cursor-pointer"
-                      onClick={() =>
-                        handleActionClick(row?.original?._id, menu?.title)
-                      }
-                    >
-                      {menu.icon} {menu.title}
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <ActionClick
+                onMenuClick={(action) =>
+                  handleActionClick(row?.original?._id, action)
+                }
+              />
             </div>
           );
         },
