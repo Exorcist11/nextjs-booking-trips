@@ -72,7 +72,7 @@ export default function page() {
         },
       },
       {
-        header: "Fullname",
+        header: "Họ tên",
         id: "fullName",
         accessorKey: "fullName",
         cell: ({ row }: any) => {
@@ -94,7 +94,7 @@ export default function page() {
         },
       },
       {
-        header: "Phone Number",
+        header: "Số điện thoại",
         id: "phoneNumber",
         accessorKey: "phoneNumber",
         // cell: ({ row }: any) => {
@@ -105,7 +105,7 @@ export default function page() {
         },
       },
       {
-        header: "Acoes",
+        header: "",
         id: "_id",
         accessorKey: "action",
         cell: ({ row }: any) => {
@@ -171,7 +171,7 @@ export default function page() {
           columns={columns}
           data={users?.data || []}
           isLoading={isLoading}
-          wrapperClassName="2xl:max-h-[66vh] xl:max-h-[57vh]"
+          wrapperClassName="2xl:max-h-[78vh]  xl:max-h-[72vh]"
         />
 
         {!isLoading && (

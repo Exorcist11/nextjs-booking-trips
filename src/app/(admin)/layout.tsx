@@ -46,7 +46,7 @@ export default function AdminLayout({
                     : ""
                 }`}
               >
-                <menu.icon size={18}/>
+                <menu.icon size={18} />
                 <p>{menu.title}</p>
               </div>
             </Link>
