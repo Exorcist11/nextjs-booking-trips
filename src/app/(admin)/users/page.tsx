@@ -57,6 +57,7 @@ export default function page() {
   React.useEffect(() => {
     getUsers(1);
   }, [pageSize, search]);
+
   const columns: any[] = React.useMemo(
     () => [
       {

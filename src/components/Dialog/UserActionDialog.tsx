@@ -144,7 +144,7 @@ export default function UserActionDialog(props: UserDialogProps) {
             </DialogHeader>
             {type === "Delete" ? (
               <>
-                <h3 className="text-red-500">
+                <h3>
                   Bạn có xác nhận xóa người dùng trên. Dữ liệu xóa không thể
                   khôi phục!
                 </h3>
@@ -162,6 +162,7 @@ export default function UserActionDialog(props: UserDialogProps) {
 
                     <Button
                       type="button"
+                      variant={"destructive"}
                       disabled={isLoading}
                       onClick={onDelete}
                     >
@@ -289,16 +290,6 @@ export default function UserActionDialog(props: UserDialogProps) {
                     />
 
                     <DialogFooter className="w-full flex flex-row sm:justify-between">
-                      {type !== "Add" && (
-                        <Button
-                          type="button"
-                          variant={"destructive"}
-                          disabled={isLoading}
-                        >
-                          <Trash />
-                          Xóa
-                        </Button>
-                      )}
                       <div className="flex gap-2 items-center justify-end w-full">
                         <Button
                           type="reset"
