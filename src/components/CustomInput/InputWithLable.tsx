@@ -11,6 +11,7 @@ interface InputProps {
   className?: string;
   isRequired?: boolean;
   value?: string;
+  disable?: boolean;
 }
 
 export function InputWithLabel(props: InputProps) {
@@ -23,6 +24,7 @@ export function InputWithLabel(props: InputProps) {
     className,
     isRequired,
     value,
+    disable,
   } = props;
   return (
     <div className="grid w-full items-center gap-1.5">
@@ -37,6 +39,7 @@ export function InputWithLabel(props: InputProps) {
         onChange={onChange}
         className={cn(className, "focus-visible:ring-transparent ")}
         value={value}
+        disabled={disable}
       />
     </div>
   );

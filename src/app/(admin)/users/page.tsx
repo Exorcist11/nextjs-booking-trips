@@ -192,6 +192,7 @@ export default function page() {
           type={type}
           userId={userId}
           reload={getUsers}
+          setType={setType}
         />
       )}
     </div>
