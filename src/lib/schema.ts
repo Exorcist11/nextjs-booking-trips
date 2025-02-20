@@ -20,7 +20,7 @@ export const carSchema = z.object({
   licensePlate: z
     .string()
     .min(1, "Biển số là bắt buộc")
-    .max(9, "Biển số không hợp lệ"),
+    .max(10, "Biển số không hợp lệ"),
   mainDriver: z.string().min(1, "Tài xế chính là bắt buộc"),
   ticketCollector: z.string().min(1, "Phụ xe là bắt buộc"),
   phoneNumber: z.coerce.number().min(1, "Số điện thoại là bắt buộc"),

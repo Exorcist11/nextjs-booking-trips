@@ -6,6 +6,7 @@ const URL_PATHS = {
   LOGIN: "/auth/login",
 
   CARS: "/cars",
+  GET_CAR_BY_ID: "/cars/getCarById",
 };
 
 export default URL_PATHS;

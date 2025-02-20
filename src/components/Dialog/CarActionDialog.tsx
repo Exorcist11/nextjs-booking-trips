@@ -17,8 +17,9 @@ import { Skeleton } from "../ui/skeleton";
 import { errorFunc } from "@/lib/errorFunc";
 import { InputWithLabel } from "../CustomInput/InputWithLable";
 import { dialogTitle } from "@/utils/dialogTitle";
-import { deleteCar } from "@/services/cars";
+import { addNewCar, deleteCar, getCarById, updateCar } from "@/services/cars";
 import RadioCards from "../CustomRadioGroup/RadioCard";
+import toastifyUtils from "@/utils/toastify";
 
 interface CarDialogProps {
   open: boolean;
@@ -44,46 +45,36 @@ export default function CarActionDialog(props: CarDialogProps) {
     },
   });
 
-  //    const getDetailCar = async () => {
-  //       setIsLoading(true);
-  //       try {
-  //         const response = await getUserById(userId);
-  //         const defaultFormValue = {
-  //           fullName: response?.fullName,
-  //           email: response?.email,
-  //           phoneNumber: response?.phoneNumber,
-  //           role: response.role,
-  //         };
-  //         form.reset(defaultFormValue);
-  //       } catch (error) {
-  //         console.error("Error from get detail user: ", error);
-  //       } finally {
-  //         setIsLoading(false);
-  //       }
-  //     };
+  const getDetailCar = async () => {
+    setIsLoading(true);
+    try {
+      const response = await getCarById(id);
+      const defaultFormValue = {
+        licensePlate: response.licensePlate,
+        mainDriver: response.mainDriver,
+        ticketCollector: response.ticketCollector,
+        phoneNumber: response.phoneNumber,
+        seats: response.seats,
+      };
+      form.reset(defaultFormValue);
+    } catch (error) {
+      console.error("Error from get detail car: ", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const onSubmit = async (data: z.infer<typeof carSchema>) => {
     try {
       setIsLoading(true);
-      // if (type === ACTION.ADD) {
-      //   await addNewUser({
-      //     ...data,
-      //     fullName: data.fullName || "",
-      //     password: data.password || "",
-      //     phoneNumber: data.phoneNumber.toString(),
-      //   });
-      // }
+      if (type === ACTION.ADD) {
+        await addNewCar(data);
+        toastifyUtils("success", "Thêm mới xe thành công!");
+      }
 
       if (type === ACTION.EDIT) {
-        //   await updateUser(
-        //     {
-        //       ...data,
-        //       fullName: data.fullName || "",
-        //       password: data.password || "",
-        //       phoneNumber: data.phoneNumber.toString(),
-        //     },
-        //     userId
-        //   );
+        await updateCar(data, id);
+        toastifyUtils("success", "Cập nhật xe thành công!");
       }
     } catch (error) {
       throw error;
@@ -107,6 +98,12 @@ export default function CarActionDialog(props: CarDialogProps) {
       setOpen(false);
     }
   };
+
+  React.useEffect(() => {
+    if (type !== ACTION.ADD) {
+      getDetailCar();
+    }
+  }, [id]);
 
   return (
     <Dialog open={open} onOpenChange={() => setOpen && setOpen(!open)}>
@@ -242,7 +239,10 @@ export default function CarActionDialog(props: CarDialogProps) {
                       <FormItem>
                         <FormLabel className="font-bold">Loại xe</FormLabel>
                         <FormControl>
-                          <RadioCards />
+                          <RadioCards
+                            value={field.value}
+                            onChange={field.onChange}
+                          />
                         </FormControl>
                       </FormItem>
                     )}
