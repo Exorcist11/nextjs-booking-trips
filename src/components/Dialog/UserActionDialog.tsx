@@ -9,7 +9,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "../ui/button";
-import { Trash } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { userSchema } from "@/lib/schema";
@@ -26,6 +25,8 @@ import {
   updateUser,
 } from "@/services/users";
 import { Skeleton } from "../ui/skeleton";
+import { ACTION, PAGE } from "@/constants/action";
+import { dialogTitle } from "@/utils/dialogTitle";
 
 interface UserDialogProps {
   open: boolean;
@@ -51,19 +52,6 @@ export default function UserActionDialog(props: UserDialogProps) {
     },
   });
 
-  const dialogTitle = () => {
-    switch (type) {
-      case "Add":
-        return "Thêm mới người dùng";
-      case "Edit":
-        return "Chỉnh sửa người dùng";
-      case "View":
-        return "Chi tiết người dùng";
-      default:
-        return "Xác nhận xóa người dùng";
-    }
-  };
-
   const getDetailUser = async () => {
     setIsLoading(true);
     try {
@@ -85,7 +73,7 @@ export default function UserActionDialog(props: UserDialogProps) {
   const onSubmit = async (data: z.infer<typeof userSchema>) => {
     try {
       setIsLoading(true);
-      if (type === "Add") {
+      if (type === ACTION.ADD) {
         await addNewUser({
           ...data,
           fullName: data.fullName || "",
@@ -94,7 +82,7 @@ export default function UserActionDialog(props: UserDialogProps) {
         });
       }
 
-      if (type === "Edit") {
+      if (type === ACTION.EDIT) {
         await updateUser(
           {
             ...data,
@@ -116,7 +104,7 @@ export default function UserActionDialog(props: UserDialogProps) {
 
   const onDelete = async () => {
     try {
-      if (type === "Delete") {
+      if (type === ACTION.DELETE) {
         await deleteUser(userId);
       }
     } catch (error) {
@@ -129,7 +117,7 @@ export default function UserActionDialog(props: UserDialogProps) {
   };
 
   React.useEffect(() => {
-    if (type !== "Add") {
+    if (type !== ACTION.ADD) {
       getDetailUser();
     }
   }, [userId]);
@@ -140,9 +128,9 @@ export default function UserActionDialog(props: UserDialogProps) {
         <DialogContent className="sm:max-w-[600px]">
           <Form {...form}>
             <DialogHeader>
-              <DialogTitle>{dialogTitle()}</DialogTitle>
+              <DialogTitle>{dialogTitle(type, PAGE.USER)}</DialogTitle>
             </DialogHeader>
-            {type === "Delete" ? (
+            {type === ACTION.DELETE ? (
               <>
                 <h3>
                   Bạn có xác nhận xóa người dùng trên. Dữ liệu xóa không thể
@@ -196,7 +184,7 @@ export default function UserActionDialog(props: UserDialogProps) {
                               placeholder="Họ và tên"
                               title="Họ tên"
                               type="text"
-                              disable={type === "View" || isLoading}
+                              disable={type === ACTION.VIEW || isLoading}
                             />
                           </FormControl>
                         </FormItem>
@@ -214,7 +202,7 @@ export default function UserActionDialog(props: UserDialogProps) {
                               placeholder="Email"
                               title="Email"
                               type="email"
-                              disable={type !== "Add" || isLoading}
+                              disable={type !== ACTION.ADD || isLoading}
                             />
                           </FormControl>
                         </FormItem>
@@ -233,14 +221,14 @@ export default function UserActionDialog(props: UserDialogProps) {
                               placeholder="Số điện thoại"
                               title="Số điện thoại"
                               type="number"
-                              disable={type === "View" || isLoading}
+                              disable={type === ACTION.VIEW || isLoading}
                             />
                           </FormControl>
                         </FormItem>
                       )}
                     />
 
-                    {type === "Add" && (
+                    {type === ACTION.ADD && (
                       <FormField
                         control={form.control}
                         name="password"
@@ -282,7 +270,7 @@ export default function UserActionDialog(props: UserDialogProps) {
                                 ) || null
                               }
                               placeholder="Chọn loại tài khoản"
-                              isDisabled={type === "View" || isLoading}
+                              isDisabled={type === ACTION.VIEW || isLoading}
                             />
                           </FormControl>
                         </FormItem>
@@ -299,17 +287,17 @@ export default function UserActionDialog(props: UserDialogProps) {
                         >
                           Hủy bỏ
                         </Button>
-                        {type === "View" && (
+                        {type === ACTION.VIEW && (
                           <Button
                             type="button"
                             disabled={isLoading}
-                            onClick={() => setType("Edit")}
+                            onClick={() => setType(ACTION.EDIT)}
                           >
                             Chỉnh sửa
                           </Button>
                         )}
 
-                        {type !== "View" && (
+                        {type !== ACTION.VIEW && (
                           <Button type="submit" disabled={isLoading}>
                             {isLoading ? "Loading..." : "Lưu"}
                           </Button>

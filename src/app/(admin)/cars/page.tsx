@@ -3,13 +3,15 @@ import ActionClick from "@/components/ActionClick";
 import InputWithIcon from "@/components/CustomInput/InputWithIcon";
 import CustomTable from "@/components/CustomTable";
 import TablePagination from "@/components/CustomTable/PaginationCustom";
+import CarActionDialog from "@/components/Dialog/CarActionDialog";
 import { Button } from "@/components/ui/button";
+import { ACTION } from "@/constants/action";
 import { ICarResponse } from "@/constants/interface";
 import {} from "@/lib/dropdownMenu";
 import { getAllCars, IParamsGetCars } from "@/services/cars";
 import toastifyUtils from "@/utils/toastify";
 import { debounce } from "lodash";
-import { Plus, Search } from "lucide-react";
+import { Car, Plus, Search } from "lucide-react";
 import React from "react";
 
 export default function page() {
@@ -19,13 +21,14 @@ export default function page() {
   const [pageSize, setPageSize] = React.useState<number>(10);
   const [open, setOpen] = React.useState<boolean>(false);
   const [type, setType] = React.useState<string>("Add");
+  const [carID, setCarID] = React.useState<string>("");
 
   const getCars = async (pageIndex: number) => {
     setIsLoading(true);
     const params: IParamsGetCars = {
       limit: pageSize,
       index: pageIndex,
-      order: "fullName",
+      order: "licensePlate",
       sort: "asc",
       licensePlate: search,
     };
@@ -39,12 +42,10 @@ export default function page() {
     }
   };
 
-  console.log("first", cars);
-
   const handleActionClick = (id: string, action: string) => {
-    // setType(action);
-    // setOpen(true);
-    // setUserId(id);
+    setType(action);
+    setOpen(true);
+    setCarID(id);
   };
 
   React.useEffect(() => {
@@ -151,7 +152,7 @@ export default function page() {
           <Button
             onClick={() => {
               setOpen(true);
-              setType("Add");
+              setType(ACTION.ADD);
             }}
           >
             <Plus color="#fff" /> Thêm mới
@@ -176,6 +177,17 @@ export default function page() {
           />
         )}
       </div>
+
+      {open && type && (
+        <CarActionDialog
+          open={open}
+          setOpen={setOpen}
+          type={type}
+          id={carID}
+          reload={getCars}
+          setType={setType}
+        />
+      )}
     </div>
   );
 }

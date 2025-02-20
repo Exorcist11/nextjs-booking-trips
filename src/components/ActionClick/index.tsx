@@ -25,7 +25,7 @@ export default function ActionClick(props: IActionClick) {
             <DropdownMenuItem
               key={index}
               className="hover:cursor-pointer"
-              onClick={() => onMenuClick(menu.title)}
+              onClick={() => onMenuClick(menu.action)}
             >
               {menu.icon} {menu.title}
             </DropdownMenuItem>

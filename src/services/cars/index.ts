@@ -21,3 +21,14 @@ export const getAllCars = async (params?: IParamsGetCars) => {
     throw error;
   }
 };
+
+export const deleteCar = async (id: string) => {
+  try {
+    await axiosInstance({
+      method: "DELETE",
+      url: `${URL_PATHS.CARS}/${id}`,
+    });
+  } catch (error) {
+    throw error;
+  }
+};

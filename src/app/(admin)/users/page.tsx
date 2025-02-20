@@ -11,13 +11,14 @@ import { Plus, Search } from "lucide-react";
 import TablePagination from "@/components/CustomTable/PaginationCustom";
 import { debounce } from "lodash";
 import ActionClick from "@/components/ActionClick";
+import { ACTION } from "@/constants/action";
 
 export default function page() {
   const [users, setUsers] = React.useState<IUserResponse>();
   const [search, setSearch] = React.useState<string>("");
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
   const [open, setOpen] = React.useState<boolean>(false);
-  const [type, setType] = React.useState<string>("Add");
+  const [type, setType] = React.useState<string>(ACTION.ADD);
   const [userId, setUserId] = React.useState<string>("");
   const [pageSize, setPageSize] = React.useState<number>(10);
 
@@ -139,7 +140,7 @@ export default function page() {
           <Button
             onClick={() => {
               setOpen(true);
-              setType("Add");
+              setType(ACTION.ADD);
             }}
           >
             <Plus color="#fff" /> Thêm mới
