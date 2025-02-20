@@ -2,17 +2,18 @@ import React, { useCallback } from "react";
 import * as RadioGroup from "@radix-ui/react-radio-group";
 import { Bus, CircleCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { SEATS } from "@/constants/seats";
 
 const options = [
   {
-    value: ["A11", "A12", "A13", "A14", "A15", "A16"],
-    label: "4-core CPU",
-    description: "32 GB RAM",
+    value: SEATS.SEAT34,
+    label: "Xe 34 chỗ",
+    description: "Samco Felix 34",
   },
   {
-    value: ["B11", "B12", "B13", "B14", "B15", "B16"],
-    label: "6-core CPU",
-    description: "32 GB RAM",
+    value: SEATS.SEAT44,
+    label: "Xe 44 chỗ",
+    description: "Hyundai Universe 45",
   },
 ];
 
