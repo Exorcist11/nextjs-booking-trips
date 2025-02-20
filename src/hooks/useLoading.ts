@@ -1,19 +1,26 @@
-import { create } from "zustand";
+import { create, useStore } from "zustand";
 import { immer } from "zustand/middleware/immer";
 
-const useLoadingStore = create(
+interface LoadingState {
+  loading: boolean;
+  setLoading: (value: boolean) => void;
+  startLoading: () => void;
+  stopLoading: () => void;
+}
+
+const useLoadingStore = create<LoadingState>()(
   immer((set) => ({
     loading: false,
-    setLoading: (value: boolean) =>
-      set((state: { loading: boolean }) => {
+    setLoading: (value) =>
+      set((state) => {
         state.loading = value;
       }),
     startLoading: () =>
-      set((state: { loading: boolean }) => {
+      set((state) => {
         state.loading = true;
       }),
     stopLoading: () =>
-      set((state: { loading: boolean }) => {
+      set((state) => {
         state.loading = false;
       }),
   }))

@@ -9,6 +9,7 @@ import { ACTION } from "@/constants/action";
 import { ICarResponse } from "@/constants/interface";
 import {} from "@/lib/dropdownMenu";
 import { getAllCars, IParamsGetCars } from "@/services/cars";
+import useStoreLoading from "@/store/loadingStore";
 import toastifyUtils from "@/utils/toastify";
 import { debounce } from "lodash";
 import { Car, Plus, Search } from "lucide-react";
@@ -17,14 +18,15 @@ import React from "react";
 export default function page() {
   const [cars, setCars] = React.useState<ICarResponse>();
   const [search, setSearch] = React.useState<string>("");
-  const [isLoading, setIsLoading] = React.useState<boolean>(true);
+
   const [pageSize, setPageSize] = React.useState<number>(10);
   const [open, setOpen] = React.useState<boolean>(false);
   const [type, setType] = React.useState<string>("Add");
   const [carID, setCarID] = React.useState<string>("");
+  const { hideLoading, loading, showLoading } = useStoreLoading();
 
   const getCars = async (pageIndex: number) => {
-    setIsLoading(true);
+    showLoading();
     const params: IParamsGetCars = {
       limit: pageSize,
       index: pageIndex,
@@ -38,7 +40,7 @@ export default function page() {
     } catch (error) {
       console.error("Error fetching cars: ", error);
     } finally {
-      setIsLoading(false);
+      hideLoading();
     }
   };
 
@@ -163,11 +165,11 @@ export default function page() {
         <CustomTable
           columns={columns}
           data={cars?.data || []}
-          isLoading={isLoading}
+          isLoading={loading}
           wrapperClassName="2xl:max-h-[78vh]  xl:max-h-[72vh]"
         />
 
-        {!isLoading && (
+        {!loading && (
           <TablePagination
             pageIndex={cars?.index || 1}
             pageSize={cars?.limit || pageSize}

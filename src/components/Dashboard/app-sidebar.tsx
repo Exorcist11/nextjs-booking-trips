@@ -3,15 +3,15 @@
 import * as React from "react";
 import {
   AudioWaveform,
-  BookOpen,
-  Bot,
+  Bus,
   Command,
   Frame,
   GalleryVerticalEnd,
+  LayoutDashboard,
   Map,
   PieChart,
   Settings2,
-  SquareTerminal,
+  Users,
 } from "lucide-react";
 
 import {
@@ -52,9 +52,9 @@ const data = {
   ],
   navMain: [
     {
-      title: "Playground",
-      url: "#",
-      icon: SquareTerminal,
+      title: "Dashboard",
+      url: "/dashboard",
+      icon: LayoutDashboard,
       isActive: true,
       items: [
         {
@@ -72,9 +72,9 @@ const data = {
       ],
     },
     {
-      title: "Models",
-      url: "#",
-      icon: Bot,
+      title: "Xe",
+      url: "/cars",
+      icon: Bus,
       items: [
         {
           title: "Genesis",
@@ -91,9 +91,9 @@ const data = {
       ],
     },
     {
-      title: "Documentation",
-      url: "#",
-      icon: BookOpen,
+      title: "Chuyến đi",
+      url: "/trips",
+      icon: Map,
       items: [
         {
           title: "Introduction",
@@ -114,9 +114,9 @@ const data = {
       ],
     },
     {
-      title: "Settings",
-      url: "#",
-      icon: Settings2,
+      title: "Người dùng",
+      url: "/users",
+      icon: Users,
       items: [
         {
           title: "General",

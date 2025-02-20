@@ -127,7 +127,7 @@ const CustomTable = <TData, TValue>(props: CustomTableProps<TData, TValue>) => {
       >
         <TableHeader
           className={cn(
-            "sticky top-0 h-16 z-10 bg-slate-200 ",
+            "sticky top-0 h-16 z-10 bg-[#fafafa] ",
             tableHeaderClass
           )}
         >
