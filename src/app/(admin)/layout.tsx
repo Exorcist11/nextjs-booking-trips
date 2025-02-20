@@ -1,59 +1,51 @@
 "use client";
 
-import Header from "@/components/HeaderAdmin";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import React from "react";
+import { AppSidebar } from "@/components/Dashboard/app-sidebar";
 import {
-  BusFront,
-  Calendar,
-  Users,
-  MapPinned,
-  LayoutDashboard,
-} from "lucide-react";
-interface MenuItem {
-  link: string;
-  title: string;
-  icon: React.ElementType;
-}
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import { Separator } from "@/components/ui/separator";
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
 
 export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const pathname = usePathname();
-  const menus: MenuItem[] = [
-    { link: "/", title: "Trang chủ", icon: LayoutDashboard },
-    { link: "/cars", title: "Xe", icon: BusFront },
-    { link: "/trips", title: "Chuyến đi", icon: MapPinned },
-    { link: "/users", title: "Tài khoản", icon: Users },
-    { link: "/bookings", title: "Đặt lịch", icon: Calendar },
-  ];
   return (
-    <div className="flex flex-col h-screen">
-      <header>
-        <Header />
-      </header>
-      <main className="flex flex-grow">
-        <nav className="w-1/6 border-r py-4 px-6 flex flex-col gap-1 bg-[#f5f7f9]">
-          {menus.map((menu, index) => (
-            <Link key={index} href={menu.link}>
-              <div
-                className={`flex items-center gap-3 cursor-pointer hover:bg-slate-200 p-2 rounded-md ${
-                  pathname === menu.link
-                    ? "bg-white shadow text-red-500 font-bold"
-                    : ""
-                }`}
-              >
-                <menu.icon size={18} />
-                <p>{menu.title}</p>
-              </div>
-            </Link>
-          ))}
-        </nav>
-        <article className="w-5/6 p-4">{children}</article>
-      </main>
-    </div>
+    <SidebarProvider>
+      <AppSidebar />
+      <SidebarInset>
+        <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+          <div className="flex items-center gap-2 px-4">
+            <SidebarTrigger className="-ml-1" />
+            <Separator orientation="vertical" className="mr-2 h-4" />
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem className="hidden md:block">
+                  <BreadcrumbLink href="#">
+                    Building Your Application
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator className="hidden md:block" />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>Data Fetching</BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+          </div>
+        </header>
+        <main className="flex-1 p-4">{children}</main>
+      </SidebarInset>
+    </SidebarProvider>
   );
 }
