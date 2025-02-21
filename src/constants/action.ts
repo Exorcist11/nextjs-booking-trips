@@ -15,4 +15,5 @@ export const ACTION_LABEL = {
 export const PAGE = {
   USER: "người dùng",
   CAR: "xe",
+  SCHEDULE: "lịch trình",
 };

@@ -7,6 +7,8 @@ const URL_PATHS = {
 
   CARS: "/cars",
   GET_CAR_BY_ID: "/cars/getCarById",
+
+  TRIP_SCHEDULE: "/tripSchedule/getAllTripSchedules",
 };
 
 export default URL_PATHS;

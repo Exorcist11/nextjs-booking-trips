@@ -27,18 +27,10 @@ import {
 import { Skeleton } from "../ui/skeleton";
 import { ACTION, PAGE } from "@/constants/action";
 import { dialogTitle } from "@/utils/dialogTitle";
+import { IDialogProps } from "@/interface/dialog.interface";
 
-interface UserDialogProps {
-  open: boolean;
-  setOpen: (open: boolean) => void;
-  type: string;
-  setType: (type: string) => void;
-  userId: string;
-  reload?: (pageIndex: number) => Promise<void>;
-}
-
-export default function UserActionDialog(props: UserDialogProps) {
-  const { open, setOpen, type, userId, reload, setType } = props;
+export default function UserActionDialog(props: IDialogProps) {
+  const { open, setOpen, type, id, reload, setType } = props;
   const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<z.infer<typeof userSchema>>({
@@ -55,7 +47,7 @@ export default function UserActionDialog(props: UserDialogProps) {
   const getDetailUser = async () => {
     setIsLoading(true);
     try {
-      const response = await getUserById(userId);
+      const response = await getUserById(id);
       const defaultFormValue = {
         fullName: response?.fullName,
         email: response?.email,
@@ -90,7 +82,7 @@ export default function UserActionDialog(props: UserDialogProps) {
             password: data.password || "",
             phoneNumber: data.phoneNumber.toString(),
           },
-          userId
+          id
         );
       }
     } catch (error) {
@@ -105,7 +97,7 @@ export default function UserActionDialog(props: UserDialogProps) {
   const onDelete = async () => {
     try {
       if (type === ACTION.DELETE) {
-        await deleteUser(userId);
+        await deleteUser(id);
       }
     } catch (error) {
       throw error;
@@ -120,7 +112,7 @@ export default function UserActionDialog(props: UserDialogProps) {
     if (type !== ACTION.ADD) {
       getDetailUser();
     }
-  }, [userId]);
+  }, [id]);
 
   return (
     <div>

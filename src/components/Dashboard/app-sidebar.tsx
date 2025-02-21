@@ -72,68 +72,47 @@ const data = {
       ],
     },
     {
-      title: "Xe",
-      url: "/cars",
+      title: "Quản lý phương tiện",
+      url: "",
       icon: Bus,
       items: [
         {
-          title: "Genesis",
-          url: "#",
+          title: "Xe khách",
+          url: "/cars",
         },
-        {
-          title: "Explorer",
-          url: "#",
-        },
-        {
-          title: "Quantum",
-          url: "#",
-        },
+        
       ],
     },
     {
-      title: "Chuyến đi",
+      title: "Quản lý chuyến đi",
       url: "/trips",
       icon: Map,
       items: [
         {
-          title: "Introduction",
-          url: "#",
+          title: "Lịch trình",
+          url: "/trips/schedule",
         },
         {
-          title: "Get Started",
-          url: "#",
+          title: "Chuyến đi",
+          url: "/trips",
         },
-        {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
-        },
+        
       ],
     },
     {
-      title: "Người dùng",
+      title: "Quản lý người dùng",
       url: "/users",
       icon: Users,
       items: [
         {
-          title: "General",
-          url: "#",
+          title: "Danh sách người dùng",
+          url: "/users",
         },
         {
           title: "Team",
           url: "#",
         },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
-        },
+        
       ],
     },
   ],

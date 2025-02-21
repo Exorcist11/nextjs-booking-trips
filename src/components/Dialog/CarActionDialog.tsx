@@ -20,17 +20,10 @@ import { dialogTitle } from "@/utils/dialogTitle";
 import { addNewCar, deleteCar, getCarById, updateCar } from "@/services/cars";
 import RadioCards from "../CustomRadioGroup/RadioCard";
 import toastifyUtils from "@/utils/toastify";
+import { IDialogProps } from "@/interface/dialog.interface";
 
-interface CarDialogProps {
-  open: boolean;
-  setOpen: (open: boolean) => void;
-  type: string;
-  setType: (type: string) => void;
-  id: string;
-  reload?: (pageIndex: number) => Promise<void>;
-}
 
-export default function CarActionDialog(props: CarDialogProps) {
+export default function CarActionDialog(props: IDialogProps) {
   const { open, setOpen, type, id, reload, setType } = props;
   const [isLoading, setIsLoading] = React.useState(false);
 

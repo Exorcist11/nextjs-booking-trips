@@ -5,13 +5,14 @@ import InputWithIcon from "@/components/CustomInput/InputWithIcon";
 import CustomTable from "@/components/CustomTable";
 import UserActionDialog from "@/components/Dialog/UserActionDialog";
 import { Button } from "@/components/ui/button";
-import { IUserResponse } from "@/constants/interface";
+
 import { getAllUsers, IParamsGetUser } from "@/services/users";
 import { Plus, Search } from "lucide-react";
 import TablePagination from "@/components/CustomTable/PaginationCustom";
 import { debounce } from "lodash";
 import ActionClick from "@/components/ActionClick";
 import { ACTION } from "@/constants/action";
+import { IUserResponse } from "@/interface/user.interface";
 
 export default function page() {
   const [users, setUsers] = React.useState<IUserResponse>();
@@ -169,7 +170,7 @@ export default function page() {
           open={open}
           setOpen={setOpen}
           type={type}
-          userId={userId}
+          id={userId}
           reload={getUsers}
           setType={setType}
         />

@@ -1,9 +1,9 @@
 "use client";
 
-import { ChevronRight, type LucideIcon } from "lucide-react";
+import { ChevronRight, Currency, type LucideIcon } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion"; // Import Framer Motion
+import { motion, AnimatePresence } from "framer-motion";
 
 import {
   Collapsible,
@@ -37,14 +37,21 @@ export function NavMain({
 }) {
   const pathname = usePathname();
   const [openItem, setOpenItem] = useState<string | null>(null);
+  const [prevActiveItem, setPrevActiveItem] = useState<string | null>(null);
 
+  // Xác định menu nào chứa route hiện tại
   useEffect(() => {
     const activeItem = items.find(
       (item) =>
         pathname === item.url ||
         item.items?.some((subItem) => pathname === subItem.url)
     );
-    setOpenItem(activeItem ? activeItem.title : null);
+    setPrevActiveItem(activeItem ? activeItem.title : null);
+
+    // Chỉ cập nhật `openItem` nếu chưa có tab mở
+    if (!openItem) {
+      setOpenItem(activeItem ? activeItem.title : null);
+    }
   }, [pathname, items]);
 
   return (
@@ -52,7 +59,8 @@ export function NavMain({
       <SidebarGroupLabel>Quản lý</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => {
-          const isActive = openItem === item.title;
+          const isActive =
+            openItem === item.title || prevActiveItem === item.title;
 
           return (
             <Collapsible
@@ -65,20 +73,17 @@ export function NavMain({
                   asChild
                   onClick={() => setOpenItem(isActive ? null : item.title)}
                 >
-                  <Link href={item.url}>
-                    <SidebarMenuButton tooltip={item.title}>
-                      {item.icon && <item.icon />}
-                      <span>{item.title}</span>
-                      <ChevronRight
-                        className={`ml-auto transition-transform duration-300 ${
-                          isActive ? "rotate-90" : ""
-                        }`}
-                      />
-                    </SidebarMenuButton>
-                  </Link>
+                  <SidebarMenuButton tooltip={item.title}>
+                    {item.icon && <item.icon />}
+                    <span>{item.title}</span>
+                    <ChevronRight
+                      className={`ml-auto transition-transform duration-300 ${
+                        isActive ? "rotate-90" : ""
+                      }`}
+                    />
+                  </SidebarMenuButton>
                 </CollapsibleTrigger>
 
-                {/* Sử dụng motion để có hiệu ứng đóng/mở mượt */}
                 <AnimatePresence>
                   {isActive && (
                     <CollapsibleContent asChild>
@@ -99,8 +104,14 @@ export function NavMain({
                               }
                             >
                               <SidebarMenuSubButton asChild>
-                                <Link href={subItem.url}>
-                                  <span>{subItem.title}</span>
+                                <Link
+                                  href={subItem.url}
+                                  onClick={() => setPrevActiveItem(item.title)}
+                                >
+                                  <span className="flex items-center gap-3">
+                                    <Currency size={11} fontWeight={700} />
+                                    {subItem.title}
+                                  </span>
                                 </Link>
                               </SidebarMenuSubButton>
                             </SidebarMenuSubItem>

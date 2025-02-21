@@ -26,3 +26,11 @@ export const carSchema = z.object({
   phoneNumber: z.coerce.number().min(1, "Số điện thoại là bắt buộc"),
   seats: z.array(z.string()).min(1, "Số ghế là bắt buộc"),
 });
+
+export const tripScheduleSchema = z.object({
+  departure: z.string().min(1, "Điểm khởi hành là bắt buộc"),
+  destination: z.string().min(1, "Điểm đến là bắt buộc"),
+  departureTime: z.string().min(1, "Thời gian khởi hành là bắt buộc"),
+  schedule: z.array(z.string()).min(1, "Lịch trình là bắt buộc"),
+  isActive: z.boolean(),
+});
