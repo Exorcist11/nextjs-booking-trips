@@ -85,7 +85,7 @@ export default function page() {
           return row?.original?.schedule?.join("-");
         },
         meta: {
-          cellClassName: "py-5 w-[45%] ",
+          cellClassName: "py-5 w-[40%] ",
         },
       },
       {
@@ -98,7 +98,7 @@ export default function page() {
             : "Ngưng hoạt động";
         },
         meta: {
-          cellClassName: "py-5 w-[10%] ",
+          cellClassName: "py-5 w-[15%] ",
         },
       },
 

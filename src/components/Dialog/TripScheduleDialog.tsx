@@ -19,6 +19,10 @@ import { dialogTitle } from "@/utils/dialogTitle";
 import { ACTION, PAGE } from "@/constants/action";
 import { Skeleton } from "../ui/skeleton";
 import { errorFunc } from "@/lib/errorFunc";
+import { InputWithLabel } from "../CustomInput/InputWithLable";
+import ReactSelect from "../CustomSelect/ReactSelect";
+import { LOCATIONS, SCHEDULES } from "@/constants/location";
+import { Switch } from "../ui/switch";
 
 export default function TripScheduleDialog(props: IDialogProps) {
   const { open, setOpen, type, id, reload, setType } = props;
@@ -39,6 +43,7 @@ export default function TripScheduleDialog(props: IDialogProps) {
   };
 
   const onSubmit = async (data: z.infer<typeof tripScheduleSchema>) => {
+    console.log(data);
     // try {
     //   setIsLoading(true);
     //   if (type === ACTION.ADD) {
@@ -81,7 +86,7 @@ export default function TripScheduleDialog(props: IDialogProps) {
   });
   return (
     <Dialog open={open} onOpenChange={() => setOpen && setOpen(!open)}>
-      <DialogContent className="sm:max-w-[800px]">
+      <DialogContent className="sm:max-w-[900px]">
         <Form {...form}>
           <DialogHeader>
             <DialogTitle>{dialogTitle(type, PAGE.SCHEDULE)}</DialogTitle>
@@ -117,7 +122,7 @@ export default function TripScheduleDialog(props: IDialogProps) {
             </>
           ) : (
             <>
-              {loading ? (
+              {loading && type !== ACTION.ADD ? (
                 <div className="flex flex-col gap-5 py-4">
                   <Skeleton className="h-10 w-full" />
                   <Skeleton className="h-10 w-full" />
@@ -127,9 +132,124 @@ export default function TripScheduleDialog(props: IDialogProps) {
               ) : (
                 <form
                   onSubmit={form.handleSubmit(onSubmit, errorFunc)}
-                  className="flex flex-col gap-5 py-4"
+                  className="flex flex-col gap-5 py-4 w-full items-center"
                 >
-                  aa
+                  <div className="flex gap-5 w-full flex-row items-center">
+                    <FormField
+                      control={form.control}
+                      name="departure"
+                      render={({ field }) => (
+                        <FormItem className="w-full">
+                          <FormControl>
+                            <ReactSelect
+                              options={LOCATIONS}
+                              value={LOCATIONS.find(
+                                (option) => option.value === field.value
+                              )}
+                              onChange={(selectedOption) => {
+                                field.onChange(selectedOption?.value);
+                              }}
+                              label="Xuất phát"
+                              isRequired
+                              placeholder="Xuất phát"
+                              disabled={type === ACTION.VIEW}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="destination"
+                      render={({ field }) => (
+                        <FormItem className="w-full">
+                          <FormControl>
+                            <ReactSelect
+                              value={LOCATIONS.find(
+                                (option) => option.value === field.value
+                              )}
+                              onChange={(selectedOption) => {
+                                field.onChange(selectedOption?.value);
+                              }}
+                              options={LOCATIONS}
+                              label="Điểm đến"
+                              isRequired
+                              placeholder="Điểm đến"
+                              disabled={type === ACTION.VIEW}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <FormField
+                    control={form.control}
+                    name="schedule"
+                    render={({ field }) => (
+                      <FormItem className="w-full">
+                        <FormControl>
+                          <ReactSelect
+                            value={SCHEDULES.filter((option) =>
+                              field.value.includes(option.value)
+                            )}
+                            onChange={(selectedOptions) => {
+                              field.onChange(
+                                selectedOptions.map((option: { value: string }) => option.value)
+                              );
+                            }}
+                            options={SCHEDULES}
+                            label="Lịch trình"
+                            isRequired
+                            isMulti
+                            placeholder="Lịch trình"
+                            disabled={type === ACTION.VIEW}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+
+                  <div className="flex gap-5 w-full flex-row items-center">
+                    <FormField
+                      control={form.control}
+                      name="departureTime"
+                      render={({ field }) => (
+                        <FormItem className="w-full">
+                          <FormControl>
+                            <ReactSelect
+                              value={LOCATIONS.find(
+                                (option) => option.value === field.value
+                              )}
+                              onChange={(selectedOption) => {
+                                field.onChange(selectedOption?.value);
+                              }}
+                              options={LOCATIONS}
+                              label="Giờ xe chạy"
+                              isRequired
+                              placeholder="Giờ xe chạy"
+                              disabled={type === ACTION.VIEW}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <FormField
+                    control={form.control}
+                    name="isActive"
+                    render={({ field }) => (
+                      <FormItem className="w-full flex-col flex">
+                        <FormLabel className="font-bold">Trạng thái</FormLabel>
+                        <Switch
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                          className="data-[state=checked]:bg-green-500 data-[state=checked]:border-green-500"
+                        />
+                      </FormItem>
+                    )}
+                  />
+
                   <DialogFooter className="w-full flex flex-row sm:justify-between">
                     <div className="flex gap-2 items-center justify-end w-full">
                       <Button
