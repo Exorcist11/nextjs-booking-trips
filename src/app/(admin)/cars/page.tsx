@@ -138,9 +138,7 @@ export default function page() {
   return (
     <div className="flex flex-col gap-5">
       <div className="flex items-center justify-between gap-5">
-        <h3 className="font-bold text-xl">
-          {/* All users <span className="text-gray-400">{users?.total}</span> */}
-        </h3>
+        <h3 className="font-bold text-xl uppercase">Danh sách xe</h3>
 
         <div className="flex items-center justify-end gap-5">
           <InputWithIcon
