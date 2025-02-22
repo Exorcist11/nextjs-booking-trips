@@ -23,56 +23,16 @@ import { InputWithLabel } from "../CustomInput/InputWithLable";
 import ReactSelect from "../CustomSelect/ReactSelect";
 import { LOCATIONS, SCHEDULES } from "@/constants/location";
 import { Switch } from "../ui/switch";
+import {
+  addNewSchedule,
+  deleteSchdule,
+  getScheduleById,
+  updateSchedule,
+} from "@/services/trips";
 
 export default function TripScheduleDialog(props: IDialogProps) {
   const { open, setOpen, type, id, reload, setType } = props;
   const { loading, startLoading, stopLoading } = useLoadingStore();
-
-  const onDelete = async () => {
-    // try {
-    //   if (type === ACTION.DELETE) {
-    //     await deleteUser(id);
-    //   }
-    // } catch (error) {
-    //   throw error;
-    // } finally {
-    //   setIsLoading(false);
-    //   reload && reload(1);
-    //   setOpen(false);
-    // }
-  };
-
-  const onSubmit = async (data: z.infer<typeof tripScheduleSchema>) => {
-    console.log(data);
-    // try {
-    //   setIsLoading(true);
-    //   if (type === ACTION.ADD) {
-    //     await addNewUser({
-    //       ...data,
-    //       fullName: data.fullName || "",
-    //       password: data.password || "",
-    //       phoneNumber: data.phoneNumber.toString(),
-    //     });
-    //   }
-    //   if (type === ACTION.EDIT) {
-    //     await updateUser(
-    //       {
-    //         ...data,
-    //         fullName: data.fullName || "",
-    //         password: data.password || "",
-    //         phoneNumber: data.phoneNumber.toString(),
-    //       },
-    //       id
-    //     );
-    //   }
-    // } catch (error) {
-    //   throw error;
-    // } finally {
-    //   setIsLoading(false);
-    //   reload && reload(1);
-    //   setOpen(false);
-    // }
-  };
 
   const form = useForm<z.infer<typeof tripScheduleSchema>>({
     resolver: zodResolver(tripScheduleSchema),
@@ -84,6 +44,65 @@ export default function TripScheduleDialog(props: IDialogProps) {
       schedule: [],
     },
   });
+
+  const onDelete = async () => {
+    try {
+      startLoading();
+      if (type === ACTION.DELETE) {
+        await deleteSchdule(id);
+      }
+    } catch (error) {
+      throw error;
+    } finally {
+      stopLoading();
+      reload && reload(1);
+      setOpen(false);
+    }
+  };
+
+  const getScheduleDetail = async () => {
+    startLoading();
+    try {
+      const response = await getScheduleById(id);
+      const defaultFormValue = {
+        departure: response?.departure,
+        destination: response?.destination,
+        departureTime: response?.departureTime,
+        isActive: response?.isActive,
+        schedule: response?.schedule,
+      };
+      form.reset(defaultFormValue);
+    } catch (error) {
+      console.error("Error from get detail car: ", error);
+    } finally {
+      stopLoading();
+    }
+  };
+
+  const onSubmit = async (data: z.infer<typeof tripScheduleSchema>) => {
+    try {
+      startLoading();
+      if (type === ACTION.ADD) {
+        await addNewSchedule(data);
+      }
+      if (type === ACTION.EDIT) {
+        await updateSchedule(data, id);
+      }
+    } catch (error) {
+      throw error;
+    } finally {
+      stopLoading();
+      reload && reload(1);
+      setOpen(false);
+    }
+  };
+
+  React.useEffect(() => {
+    if (type !== ACTION.ADD) {
+      getScheduleDetail();
+    }
+  }, [id]);
+
   return (
     <Dialog open={open} onOpenChange={() => setOpen && setOpen(!open)}>
       <DialogContent className="sm:max-w-[900px]">
@@ -195,7 +214,9 @@ export default function TripScheduleDialog(props: IDialogProps) {
                             )}
                             onChange={(selectedOptions) => {
                               field.onChange(
-                                selectedOptions.map((option: { value: string }) => option.value)
+                                selectedOptions.map(
+                                  (option: { value: string }) => option.value
+                                )
                               );
                             }}
                             options={SCHEDULES}
@@ -217,18 +238,13 @@ export default function TripScheduleDialog(props: IDialogProps) {
                       render={({ field }) => (
                         <FormItem className="w-full">
                           <FormControl>
-                            <ReactSelect
-                              value={LOCATIONS.find(
-                                (option) => option.value === field.value
-                              )}
-                              onChange={(selectedOption) => {
-                                field.onChange(selectedOption?.value);
-                              }}
-                              options={LOCATIONS}
-                              label="Giờ xe chạy"
+                            <InputWithLabel
+                              {...field}
+                              placeholder="Thời gian khởi hành"
+                              title="Thời gian khởi hành"
+                              type="text"
                               isRequired
-                              placeholder="Giờ xe chạy"
-                              disabled={type === ACTION.VIEW}
+                              disable={type === ACTION.VIEW}
                             />
                           </FormControl>
                         </FormItem>
@@ -242,6 +258,7 @@ export default function TripScheduleDialog(props: IDialogProps) {
                       <FormItem className="w-full flex-col flex">
                         <FormLabel className="font-bold">Trạng thái</FormLabel>
                         <Switch
+                          disabled={type === ACTION.VIEW}
                           checked={field.value}
                           onCheckedChange={field.onChange}
                           className="data-[state=checked]:bg-green-500 data-[state=checked]:border-green-500"

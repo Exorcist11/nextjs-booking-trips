@@ -30,6 +30,16 @@ export default function page() {
     setId(id);
   };
 
+  const daysMap: { [key: string]: string } = {
+    "2": "Thứ 2",
+    "3": "Thứ 3",
+    "4": "Thứ 4",
+    "5": "Thứ 5",
+    "6": "Thứ 6",
+    "7": "Thứ 7",
+    "cn": "Chủ nhật",
+  };
+
   const columns: any[] = React.useMemo(
     () => [
       {
@@ -82,7 +92,9 @@ export default function page() {
         id: "schedule",
         accessorKey: "schedule",
         cell: ({ row }: any) => {
-          return row?.original?.schedule?.join("-");
+          return row?.original?.schedule
+            ?.map((day: string) => daysMap[day] || day) 
+            .join(" - ");
         },
         meta: {
           cellClassName: "py-5 w-[40%] ",

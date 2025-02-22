@@ -1,10 +1,10 @@
 import { OptionsSelect } from "@/components/CustomSelect/ReactSelect";
 
 export const LOCATIONS: OptionsSelect[] = [
-  { value: "HaNoi", label: "Hà Nội" },
-  { value: "ThanhHoa", label: "Thanh Hoá" },
-  { value: "ThaiNguyen", label: "Thái Nguyên" },
-  { value: "HaiPhong", label: "Hải Phòng" },
+  { value: "Hà Nội", label: "Hà Nội" },
+  { value: "Thanh Hoá", label: "Thanh Hoá" },
+  { value: "Thái Nguyên", label: "Thái Nguyên" },
+  { value: "Hải Phòng", label: "Hải Phòng" },
 ];
 
 export const SCHEDULES: OptionsSelect[] = [
