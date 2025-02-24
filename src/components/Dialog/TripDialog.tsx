@@ -14,7 +14,6 @@ import useLoadingStore from "@/hooks/useLoading";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { tripScheduleSchema } from "@/lib/schema";
 import { dialogTitle } from "@/utils/dialogTitle";
 import { ACTION, PAGE } from "@/constants/action";
 import { Skeleton } from "../ui/skeleton";
@@ -24,24 +23,24 @@ import ReactSelect from "../CustomSelect/ReactSelect";
 import { LOCATIONS, SCHEDULES } from "@/constants/location";
 import { Switch } from "../ui/switch";
 import {
-  addNewSchedule,
-  deleteSchdule,
-  getScheduleById,
-  updateSchedule,
-} from "@/services/trips";
+  addNewRoute,
+  deleteRoute,
+  getRouteById,
+  updateRoute,
+} from "@/services/route";
+import { routeSchema } from "@/lib/schema";
 
-export default function TripScheduleDialog(props: IDialogProps) {
+export default function TripDialog(props: IDialogProps) {
   const { open, setOpen, type, id, reload, setType } = props;
   const { loading, startLoading, stopLoading } = useLoadingStore();
 
-  const form = useForm<z.infer<typeof tripScheduleSchema>>({
-    resolver: zodResolver(tripScheduleSchema),
+  const form = useForm<z.infer<typeof routeSchema>>({
+    resolver: zodResolver(routeSchema),
     defaultValues: {
       departure: "",
       destination: "",
-      departureTime: "",
+
       isActive: true,
-      schedule: [],
     },
   });
 
@@ -49,7 +48,7 @@ export default function TripScheduleDialog(props: IDialogProps) {
     try {
       startLoading();
       if (type === ACTION.DELETE) {
-        await deleteSchdule(id);
+        await deleteRoute(id);
       }
     } catch (error) {
       throw error;
@@ -63,13 +62,11 @@ export default function TripScheduleDialog(props: IDialogProps) {
   const getScheduleDetail = async () => {
     startLoading();
     try {
-      const response = await getScheduleById(id);
+      const response = await getRouteById(id);
       const defaultFormValue = {
         departure: response?.departure,
         destination: response?.destination,
-        departureTime: response?.departureTime,
         isActive: response?.isActive,
-        schedule: response?.schedule,
       };
       form.reset(defaultFormValue);
     } catch (error) {
@@ -79,14 +76,14 @@ export default function TripScheduleDialog(props: IDialogProps) {
     }
   };
 
-  const onSubmit = async (data: z.infer<typeof tripScheduleSchema>) => {
+  const onSubmit = async (data: z.infer<typeof routeSchema>) => {
     try {
       startLoading();
       if (type === ACTION.ADD) {
-        await addNewSchedule(data);
+        await addNewRoute(data);
       }
       if (type === ACTION.EDIT) {
-        await updateSchedule(data, id);
+        await updateRoute(data, id);
       }
     } catch (error) {
       throw error;
@@ -145,8 +142,7 @@ export default function TripScheduleDialog(props: IDialogProps) {
                 <div className="flex flex-col gap-5 py-4">
                   <Skeleton className="h-10 w-full" />
                   <Skeleton className="h-10 w-full" />
-                  <Skeleton className="h-10 w-full" />
-                  <Skeleton className="h-10 w-full" />
+                  
                 </div>
               ) : (
                 <form
@@ -202,49 +198,26 @@ export default function TripScheduleDialog(props: IDialogProps) {
                       )}
                     />
                   </div>
-                  <FormField
-                    control={form.control}
-                    name="schedule"
-                    render={({ field }) => (
-                      <FormItem className="w-full">
-                        <FormControl>
-                          <ReactSelect
-                            value={SCHEDULES.filter((option) =>
-                              field.value.includes(option.value)
-                            )}
-                            onChange={(selectedOptions) => {
-                              field.onChange(
-                                selectedOptions.map(
-                                  (option: { value: string }) => option.value
-                                )
-                              );
-                            }}
-                            options={SCHEDULES}
-                            label="Lịch trình"
-                            isRequired
-                            isMulti
-                            placeholder="Lịch trình"
-                            disabled={type === ACTION.VIEW}
-                          />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
 
                   <div className="flex gap-5 w-full flex-row items-center">
                     <FormField
                       control={form.control}
-                      name="departureTime"
+                      name="departure"
                       render={({ field }) => (
                         <FormItem className="w-full">
                           <FormControl>
-                            <InputWithLabel
-                              {...field}
-                              placeholder="Thời gian khởi hành"
-                              title="Thời gian khởi hành"
-                              type="text"
+                            <ReactSelect
+                              options={LOCATIONS}
+                              value={LOCATIONS.find(
+                                (option) => option.value === field.value
+                              )}
+                              onChange={(selectedOption) => {
+                                field.onChange(selectedOption?.value);
+                              }}
+                              label="Xuất phát"
                               isRequired
-                              disable={type === ACTION.VIEW}
+                              placeholder="Xuất phát"
+                              disabled={type === ACTION.VIEW}
                             />
                           </FormControl>
                         </FormItem>

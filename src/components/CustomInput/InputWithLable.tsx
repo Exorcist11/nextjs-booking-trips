@@ -37,7 +37,7 @@ export function InputWithLabel(props: InputProps) {
         id={id}
         placeholder={placeholder}
         onChange={onChange}
-        className={cn(className, "focus-visible:ring-transparent ")}
+        className={cn(className, "focus-visible:ring-transparent")}
         value={value}
         disabled={disable}
       />

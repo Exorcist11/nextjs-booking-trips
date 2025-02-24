@@ -80,7 +80,6 @@ const data = {
           title: "Xe khách",
           url: "/cars",
         },
-        
       ],
     },
     {
@@ -89,6 +88,10 @@ const data = {
       icon: Map,
       items: [
         {
+          title: "Tuyến đường",
+          url: "/trips/route",
+        },
+        {
           title: "Lịch trình",
           url: "/trips/schedule",
         },
@@ -96,7 +99,6 @@ const data = {
           title: "Chuyến đi",
           url: "/trips",
         },
-        
       ],
     },
     {
@@ -112,7 +114,6 @@ const data = {
           title: "Team",
           url: "#",
         },
-        
       ],
     },
   ],

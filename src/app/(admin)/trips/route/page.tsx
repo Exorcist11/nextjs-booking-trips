@@ -1,23 +1,41 @@
 "use client";
 import ActionClick from "@/components/ActionClick";
-import InputWithIcon from "@/components/CustomInput/InputWithIcon";
 import CustomTable from "@/components/CustomTable";
 import TablePagination from "@/components/CustomTable/PaginationCustom";
-import TripScheduleDialog from "@/components/Dialog/TripScheduleDialog";
 import { Button } from "@/components/ui/button";
 import { ACTION } from "@/constants/action";
-
+import { LOCATIONS } from "@/constants/location";
 import useLoadingStore from "@/hooks/useLoading";
-import { IScheduleTripResponse } from "@/interface/schedule.interface";
-import { getAllTripSchedule, IParamsGetTripSchedule } from "@/services/trips";
-import { debounce } from "lodash";
-import { Plus, Search } from "lucide-react";
+import { Plus } from "lucide-react";
 import React from "react";
 
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { IRouteResponse } from "@/interface/route.interface";
+import { getAllRoute } from "@/services/route";
+import RouteDialog from "@/components/Dialog/RouteDialog";
+
+interface IRouteParams {
+  limit?: number;
+  index?: number;
+  sort?: "asc";
+  destination?: string;
+  departure?: string;
+}
+
 export default function page() {
-  const [tripSchedule, setTripSchedule] =
-    React.useState<IScheduleTripResponse>();
-  const [search, setSearch] = React.useState<string>("");
+  const [route, setRoute] = React.useState<IRouteResponse>();
+  const [locations, setLocations] = React.useState({
+    departure: "",
+    destination: "",
+  });
+
   const [open, setOpen] = React.useState<boolean>(false);
   const [type, setType] = React.useState<string>(ACTION.ADD);
   const [pageSize, setPageSize] = React.useState<number>(10);
@@ -25,19 +43,10 @@ export default function page() {
   const [id, setId] = React.useState<string>("");
 
   const handleActionClick = (id: string, action: string) => {
+    console.log(id)
     setType(action);
     setOpen(true);
     setId(id);
-  };
-
-  const daysMap: { [key: string]: string } = {
-    "2": "Thứ 2",
-    "3": "Thứ 3",
-    "4": "Thứ 4",
-    "5": "Thứ 5",
-    "6": "Thứ 6",
-    "7": "Thứ 7",
-    "cn": "Chủ nhật",
   };
 
   const columns: any[] = React.useMemo(
@@ -46,8 +55,8 @@ export default function page() {
         header: "No.",
         id: "no",
         cell: ({ row }: any) => {
-          const pageIndex = tripSchedule?.index || 1;
-          const pageSize = tripSchedule?.limit || 10;
+          const pageIndex = route?.index || 1;
+          const pageSize = route?.limit || 10;
           return (pageIndex - 1) * pageSize + row.index + 1;
         },
         meta: {
@@ -62,7 +71,7 @@ export default function page() {
           return row?.original?.departure;
         },
         meta: {
-          cellClassName: "py-5 w-[10%] ",
+          cellClassName: "py-5 w-[37.5%] ",
         },
       },
       {
@@ -73,33 +82,10 @@ export default function page() {
           return row?.original?.destination;
         },
         meta: {
-          cellClassName: "py-5 w-[10%] ",
+          cellClassName: "py-5 w-[37.5%] ",
         },
       },
-      {
-        header: "Thời gian xe chạy",
-        id: "departureTime",
-        accessorKey: "departureTime",
-        cell: ({ row }: any) => {
-          return row?.original?.departureTime;
-        },
-        meta: {
-          cellClassName: "py-5 w-[15%] ",
-        },
-      },
-      {
-        header: "Lịch trình",
-        id: "schedule",
-        accessorKey: "schedule",
-        cell: ({ row }: any) => {
-          return row?.original?.schedule
-            ?.map((day: string) => daysMap[day] || day) 
-            .join(" - ");
-        },
-        meta: {
-          cellClassName: "py-5 w-[40%] ",
-        },
-      },
+
       {
         header: "Trạng thái",
         id: "isActive",
@@ -134,22 +120,23 @@ export default function page() {
         },
       },
     ],
-    [JSON.stringify(tripSchedule)]
+    [JSON.stringify(route)]
   );
 
   const getScheduleTrip = async (pageIndex: number) => {
     startLoading();
-    const params: IParamsGetTripSchedule = {
+    const params: IRouteParams = {
       limit: pageSize,
       index: pageIndex,
       sort: "asc",
-      departure: search,
+      destination: locations.destination,
+      departure: locations.departure,
     };
     try {
-      const response = await getAllTripSchedule(params);
-      setTripSchedule(response);
+      const response = await getAllRoute(params);
+      setRoute(response);
     } catch (error) {
-      console.error("Error fetching cars: ", error);
+      console.error("Error fetching route: ", error);
     } finally {
       stopLoading();
     }
@@ -157,22 +144,67 @@ export default function page() {
 
   React.useEffect(() => {
     getScheduleTrip(1);
-  }, [pageSize, search]);
+  }, [pageSize, locations.departure, locations.destination]);
 
   return (
     <div className="flex flex-col gap-5">
       <div className="flex items-center justify-between gap-5">
-        <h3 className="font-bold text-xl uppercase">Danh sách lịch trình</h3>
+        <h3 className="font-bold text-xl uppercase">Danh sách tuyến đường</h3>
 
         <div className="flex items-center justify-end gap-5">
-          <InputWithIcon
-            Icon={Search}
-            placeholder="Tìm kiếm biển số xe"
-            className="w-[35%]"
-            onChange={debounce((e: React.ChangeEvent<HTMLInputElement>) => {
-              setSearch(e.target.value);
-            }, 1000)}
-          />
+          <Select
+            onValueChange={(value) =>
+              setLocations((prev) => ({
+                ...prev,
+                departure: value,
+              }))
+            }
+          >
+            <SelectTrigger className="w-[200px] focus-visible:ring-transparent">
+              <SelectValue placeholder="Chọn điểm khởi hành" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                {LOCATIONS.map((item, index) => (
+                  <SelectItem
+                    key={index}
+                    value={item.value}
+                    onClick={() =>
+                      setLocations((prev) => ({
+                        ...prev,
+                        departure: item.value,
+                      }))
+                    }
+                  >
+                    {item.label}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+
+          <Select
+            onValueChange={(value) =>
+              setLocations((prev) => ({
+                ...prev,
+                destination: value,
+              }))
+            }
+          >
+            <SelectTrigger className="w-[200px] focus-visible:ring-transparent">
+              <SelectValue placeholder="Chọn điểm đến" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                {LOCATIONS.map((item, index) => (
+                  <SelectItem key={index} value={item.value}>
+                    {item.label}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+
           <Button
             onClick={() => {
               setOpen(true);
@@ -186,16 +218,16 @@ export default function page() {
       <div className="flex gap-2 flex-col">
         <CustomTable
           columns={columns}
-          data={tripSchedule?.data || []}
+          data={route?.data || []}
           isLoading={loading}
           wrapperClassName="2xl:max-h-[78vh]  xl:max-h-[72vh]"
         />
 
         {!loading && (
           <TablePagination
-            pageIndex={tripSchedule?.index || 1}
-            pageSize={tripSchedule?.limit || pageSize}
-            totalCount={tripSchedule?.total || 0}
+            pageIndex={route?.index || 1}
+            pageSize={route?.limit || pageSize}
+            totalCount={route?.total || 0}
             onChangePage={(pageIndex) => getScheduleTrip(pageIndex)}
             onChangePageSize={(pageSize) => setPageSize(pageSize)}
           />
@@ -203,7 +235,7 @@ export default function page() {
       </div>
 
       {open && type && (
-        <TripScheduleDialog
+        <RouteDialog
           open={open}
           setOpen={setOpen}
           type={type}

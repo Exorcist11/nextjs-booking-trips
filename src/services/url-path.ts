@@ -8,10 +8,12 @@ const URL_PATHS = {
   CARS: "/cars",
   GET_CAR_BY_ID: "/cars/getCarById",
 
-  TRIP_SCHEDULE: "/tripSchedule/getAllTripSchedules",
-  ADD_SCHEDULE: "/tripSchedule/createTripSchedule",
-  SCHEDULE: "/tripSchedule",
-  GET_SCHEDULE_BY_ID: "/tripSchedule/getScheduleById",
+  GET_ROUTE: "/route/getAllRoute",
+  CREATE_ROUTE: "/route/createRoute",
+  ROUTE: "/route",
+  GET_ROUTE_BY_ID: "/route/getRouteById",
+  TRIPS: "/trips",
+  GET_TRIPS_BY_ID: "/trips/getTripById",
 };
 
 export default URL_PATHS;

@@ -50,7 +50,7 @@ export default function ReactSelect(props: IReactSelectProps) {
     disabled,
   } = props;
   return (
-    <div>
+    <div className="">
       {label && (
         <Label className="font-bold">
           {label} {isRequired && <span className="text-red-500">*</span>}
