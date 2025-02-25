@@ -43,7 +43,6 @@ export default function page() {
   const [id, setId] = React.useState<string>("");
 
   const handleActionClick = (id: string, action: string) => {
-    console.log(id)
     setType(action);
     setOpen(true);
     setId(id);
@@ -166,16 +165,7 @@ export default function page() {
             <SelectContent>
               <SelectGroup>
                 {LOCATIONS.map((item, index) => (
-                  <SelectItem
-                    key={index}
-                    value={item.value}
-                    onClick={() =>
-                      setLocations((prev) => ({
-                        ...prev,
-                        departure: item.value,
-                      }))
-                    }
-                  >
+                  <SelectItem key={index} value={item.value}>
                     {item.label}
                   </SelectItem>
                 ))}

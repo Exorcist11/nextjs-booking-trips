@@ -14,6 +14,11 @@ const URL_PATHS = {
   GET_ROUTE_BY_ID: "/route/getRouteById",
   TRIPS: "/trips",
   GET_TRIPS_BY_ID: "/trips/getTripById",
+
+  GET_ALL_SCHEDULE: "/schedule/getAllSchedule",
+  GET_SCHEDULE_BY_ID: "/schedule/getScheduleById",
+  CREATE_SCHEDULE: "/schedule/createSchedule",
+  SCHEDULE: "/schedule",
 };
 
 export default URL_PATHS;

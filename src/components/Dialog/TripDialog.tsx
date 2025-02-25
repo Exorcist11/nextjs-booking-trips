@@ -70,7 +70,7 @@ export default function TripDialog(props: IDialogProps) {
       };
       form.reset(defaultFormValue);
     } catch (error) {
-      console.error("Error from get detail car: ", error);
+      console.error("Error from get detail trip: ", error);
     } finally {
       stopLoading();
     }

@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { string, z } from "zod";
 
 export const loginFormSchema = z.object({
   email: z.string().email("Email không hợp lệ").min(1, "Email là bắt buộc"),
@@ -30,5 +30,13 @@ export const carSchema = z.object({
 export const routeSchema = z.object({
   departure: z.string().min(1, "Điểm khởi hành là bắt buộc"),
   destination: z.string().min(1, "Điểm đến là bắt buộc"),
+  isActive: z.boolean(),
+});
+
+export const scheduleSchema = z.object({
+  route: z.string().min(1, "Tuyến đường là bắt buộc"),
+  car: z.string().min(1, "Vui lòng chọn xe di chuyển"),
+  departureTime: z.string(),
+  price: z.number(),
   isActive: z.boolean(),
 });

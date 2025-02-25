@@ -1,4 +1,3 @@
-
 import axiosInstance from "../api-services";
 import URL_PATHS from "../url-path";
 
@@ -11,8 +10,6 @@ export interface IParamsGetTripSchedule {
   order?: string;
   sort?: "asc" | "desc";
 }
-
-
 
 export const getAllTrips = async (params: IParamsGetTripSchedule) => {
   try {

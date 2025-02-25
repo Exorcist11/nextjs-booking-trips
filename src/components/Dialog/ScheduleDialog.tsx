@@ -1,4 +1,3 @@
-import { IDialogProps } from "@/interface/dialog.interface";
 import React from "react";
 import {
   Dialog,
@@ -20,8 +19,7 @@ import { ACTION, PAGE } from "@/constants/action";
 import { Skeleton } from "../ui/skeleton";
 import { errorFunc } from "@/lib/errorFunc";
 import { InputWithLabel } from "../CustomInput/InputWithLable";
-import ReactSelect from "../CustomSelect/ReactSelect";
-import { LOCATIONS, SCHEDULES } from "@/constants/location";
+import ReactSelect, { OptionsSelect } from "../CustomSelect/ReactSelect";
 import { Switch } from "../ui/switch";
 import {
   addNewRoute,
@@ -29,17 +27,36 @@ import {
   getRouteById,
   updateRoute,
 } from "@/services/route";
-import { routeSchema } from "@/lib/schema";
+import { scheduleSchema } from "@/lib/schema";
+import {
+  addNewSchedule,
+  getScheduleById,
+  updateSchedule,
+} from "@/services/schedule";
 
-export default function RouteDialog(props: IDialogProps) {
-  const { open, setOpen, type, id, reload, setType } = props;
+interface IScheduleProps {
+  open: boolean;
+  setOpen: (open: boolean) => void;
+  type: string;
+  setType: (type: string) => void;
+  id: string;
+  reload?: (pageIndex: number) => Promise<void>;
+  CAR_OPTION: OptionsSelect[];
+  ROUTE_OPTION: OptionsSelect[];
+}
+
+export default function ScheduleDialog(props: IScheduleProps) {
+  const { open, setOpen, type, id, reload, setType, CAR_OPTION, ROUTE_OPTION } =
+    props;
   const { loading, startLoading, stopLoading } = useLoadingStore();
 
-  const form = useForm<z.infer<typeof routeSchema>>({
-    resolver: zodResolver(routeSchema),
+  const form = useForm<z.infer<typeof scheduleSchema>>({
+    resolver: zodResolver(scheduleSchema),
     defaultValues: {
-      departure: "",
-      destination: "",
+      car: "",
+      departureTime: "",
+      price: 0,
+      route: "",
       isActive: true,
     },
   });
@@ -62,30 +79,30 @@ export default function RouteDialog(props: IDialogProps) {
   const getScheduleDetail = async () => {
     startLoading();
     try {
-      const response = await getRouteById(id);
+      const response = await getScheduleById(id);
       const defaultFormValue = {
-        departure: response?.departure,
-        destination: response?.destination,
-        departureTime: response?.departureTime,
-        isActive: response?.isActive,
-        schedule: response?.schedule,
+        route: response.route,
+        car: response.car,
+        departureTime: response.departureTime,
+        price: response.price,
+        isActive: response.isActive,
       };
       form.reset(defaultFormValue);
     } catch (error) {
-      console.error("Error from get detail route: ", error);
+      console.error("Error from get detail schedule: ", error);
     } finally {
       stopLoading();
     }
   };
 
-  const onSubmit = async (data: z.infer<typeof routeSchema>) => {
+  const onSubmit = async (data: z.infer<typeof scheduleSchema>) => {
     try {
       startLoading();
       if (type === ACTION.ADD) {
-        await addNewRoute(data);
+        await addNewSchedule(data);
       }
       if (type === ACTION.EDIT) {
-        await updateRoute(data, id);
+        await updateSchedule(data, id);
       }
     } catch (error) {
       throw error;
@@ -104,7 +121,7 @@ export default function RouteDialog(props: IDialogProps) {
 
   return (
     <Dialog open={open} onOpenChange={() => setOpen && setOpen(!open)}>
-      <DialogContent className="sm:max-w-[900px]">
+      <DialogContent className="sm:max-w-[700px]">
         <Form {...form}>
           <DialogHeader>
             <DialogTitle>{dialogTitle(type, PAGE.SCHEDULE)}</DialogTitle>
@@ -144,63 +161,102 @@ export default function RouteDialog(props: IDialogProps) {
                 <div className="flex flex-col gap-5 py-4">
                   <Skeleton className="h-10 w-full" />
                   <Skeleton className="h-10 w-full" />
-                 
+                  <Skeleton className="h-10 w-full" />
+                  <Skeleton className="h-10 w-full" />
+                  <Skeleton className="h-10 w-full" />
                 </div>
               ) : (
                 <form
                   onSubmit={form.handleSubmit(onSubmit, errorFunc)}
-                  className="flex flex-col gap-5 py-4 w-full items-center"
+                  className="flex flex-col gap-5 py-4 w-full"
                 >
-                  <div className="flex gap-5 w-full flex-row items-center">
-                    <FormField
-                      control={form.control}
-                      name="departure"
-                      render={({ field }) => (
-                        <FormItem className="w-full">
-                          <FormControl>
-                            <ReactSelect
-                              options={LOCATIONS}
-                              value={LOCATIONS.find(
-                                (option) => option.value === field.value
-                              )}
-                              onChange={(selectedOption) => {
-                                field.onChange(selectedOption?.value);
-                              }}
-                              label="Xuất phát"
-                              isRequired
-                              placeholder="Xuất phát"
-                              disabled={type === ACTION.VIEW}
-                            />
-                          </FormControl>
-                        </FormItem>
-                      )}
-                    />
+                  <FormField
+                    control={form.control}
+                    name="route"
+                    render={({ field }) => (
+                      <FormItem className="w-full">
+                        <FormControl>
+                          <ReactSelect
+                            options={ROUTE_OPTION}
+                            value={ROUTE_OPTION.find(
+                              (option) => option.value === field.value
+                            )}
+                            onChange={(selectedOption) => {
+                              field.onChange(selectedOption?.value);
+                            }}
+                            label="Chọn tuyến đường"
+                            isRequired
+                            placeholder="Chọn tuyến đường"
+                            disabled={type === ACTION.VIEW}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
 
-                    <FormField
-                      control={form.control}
-                      name="destination"
-                      render={({ field }) => (
-                        <FormItem className="w-full">
-                          <FormControl>
-                            <ReactSelect
-                              value={LOCATIONS.find(
-                                (option) => option.value === field.value
-                              )}
-                              onChange={(selectedOption) => {
-                                field.onChange(selectedOption?.value);
-                              }}
-                              options={LOCATIONS}
-                              label="Điểm đến"
-                              isRequired
-                              placeholder="Điểm đến"
-                              disabled={type === ACTION.VIEW}
-                            />
-                          </FormControl>
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                  
+                  <FormField
+                    control={form.control}
+                    name="car"
+                    render={({ field }) => (
+                      <FormItem className="w-full">
+                        <FormControl>
+                          <ReactSelect
+                            value={CAR_OPTION.find(
+                              (option) => option.value === field.value
+                            )}
+                            onChange={(selectedOption) => {
+                              field.onChange(selectedOption?.value);
+                            }}
+                            options={CAR_OPTION}
+                            label="Chọn xe"
+                            isRequired
+                            placeholder="Chọn xe"
+                            disabled={type === ACTION.VIEW}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="departureTime"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <InputWithLabel
+                            {...field}
+                            placeholder="Giờ khởi hành"
+                            title="Giờ khởi hành"
+                            type="text"
+                            disable={type === ACTION.VIEW}
+                            isRequired
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="price"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <InputWithLabel
+                            {...field}
+                            placeholder="Giá vé"
+                            title="Giá vé"
+                            type="number"
+                            disable={type === ACTION.VIEW}
+                            isRequired
+                            value={field.value.toString()}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+
                   <FormField
                     control={form.control}
                     name="isActive"
@@ -216,7 +272,6 @@ export default function RouteDialog(props: IDialogProps) {
                       </FormItem>
                     )}
                   />
-
                   <DialogFooter className="w-full flex flex-row sm:justify-between">
                     <div className="flex gap-2 items-center justify-end w-full">
                       <Button
