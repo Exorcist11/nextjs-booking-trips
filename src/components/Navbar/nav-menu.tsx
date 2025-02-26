@@ -13,10 +13,11 @@ import { usePathname } from "next/navigation";
 export const NavMenu = (props: NavigationMenuProps) => {
   const pathname = usePathname();
   const menus = [
-    { path: "/", label: "Home" },
-    { path: "/blogs", label: "Blog" },
-    { path: "/about", label: "About" },
-    { path: "/contact", label: "Contact Us" },
+    { path: "/", label: "Trang chủ" },
+    { path: "/blogs", label: "Tin tức" },
+    { path: "/about", label: "Giới thiệu" },
+    { path: "/services", label: "Dịch vụ" },
+    { path: "/contact", label: "Liên hệ" },
   ];
   return (
     <NavigationMenu {...props}>
