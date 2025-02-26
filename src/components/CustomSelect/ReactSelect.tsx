@@ -1,5 +1,5 @@
 import React from "react";
-import Select, { StylesConfig } from "react-select";
+import Select, { StylesConfig, components } from "react-select";
 import { Label } from "../ui/label";
 
 export type OptionsSelect = {
@@ -17,17 +17,21 @@ interface IReactSelectProps {
   value?: any;
   placeholder?: string;
   disabled?: boolean;
+  icon?: React.ReactNode;
 }
 
 const customStyles: StylesConfig<any, boolean> = {
   placeholder: (defaultStyles) => ({
     ...defaultStyles,
-    fontSize: "14px", // Thu nhỏ chữ placeholder
+    fontSize: "14px",
     color: "#999",
   }),
   control: (defaultStyles) => ({
     ...defaultStyles,
     fontSize: "14px",
+    display: "flex",
+    alignItems: "center",
+    paddingLeft: "8px", // Giúp text không bị dính vào icon
   }),
   option: (base, { isFocused }) => ({
     ...base,
@@ -35,6 +39,25 @@ const customStyles: StylesConfig<any, boolean> = {
     backgroundColor: isFocused ? "#f0f0f0" : "white",
     color: "black",
   }),
+  valueContainer: (defaultStyles) => ({
+    ...defaultStyles,
+    display: "flex",
+    alignItems: "center",
+    padding: "4px 8px",
+  }),
+};
+
+// Custom ValueContainer để đặt icon bên trái
+const ValueContainer = ({ children, ...props }: any) => {
+  const { selectProps } = props;
+  return (
+    <components.ValueContainer {...props}>
+      <div className="flex items-center gap-2">
+        {selectProps.icon && <span>{selectProps.icon}</span>}
+        {children}
+      </div>
+    </components.ValueContainer>
+  );
 };
 
 export default function ReactSelect(props: IReactSelectProps) {
@@ -48,9 +71,11 @@ export default function ReactSelect(props: IReactSelectProps) {
     value,
     placeholder,
     disabled,
+    icon,
   } = props;
+
   return (
-    <div className="">
+    <div>
       {label && (
         <Label className="font-bold">
           {label} {isRequired && <span className="text-red-500">*</span>}
@@ -60,11 +85,16 @@ export default function ReactSelect(props: IReactSelectProps) {
         isMulti={isMulti}
         options={options}
         value={value}
+        components={{
+          IndicatorSeparator: () => null,
+          ValueContainer, // Thêm component ValueContainer để hiển thị icon bên trái
+        }}
         onChange={onChange}
         name={name}
         placeholder={placeholder}
         isDisabled={disabled}
         styles={customStyles}
+        {...(icon ? { icon } : {})}
       />
     </div>
   );

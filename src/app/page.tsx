@@ -1,101 +1,114 @@
+"use client";
+
+import ReactSelect from "@/components/CustomSelect/ReactSelect";
+import DatePicker from "@/components/DatePicker/DatePicker";
+import { Button } from "@/components/ui/button";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
+import { LOCATIONS } from "@/constants/location";
+import { findTicketSchema } from "@/lib/schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { MapPin, MousePointer2 } from "lucide-react";
 import Image from "next/image";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 export default function Home() {
+  const form = useForm<z.infer<typeof findTicketSchema>>({
+    resolver: zodResolver(findTicketSchema),
+    defaultValues: {
+      dateStart: new Date(),
+      departure: "",
+      destination: "",
+    },
+  });
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <div className="min-h-screen">
+      <div className="relative">
+        <div className="bg-white h-[800px] w-full"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full px-5 flex items-center flex-col gap-5">
+          <h3 className="text-center text-2xl uppercase font-bold text-[#424248]">
+            Đặt vé trực tuyến tiện lợi, an toàn và dễ dàng.
+          </h3>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+          <Button className="px-4 py-3 bg-red-500 uppercase font-semibold h-12">
+            Đặt vé ngay
+          </Button>
+
+          <h3 className="text-center text-2xl uppercase font-bold text-[#424248]">
+            Chọn vé của bạn
+          </h3>
+
+          <div className="w-full shadow-[0_3px_10px_rgb(0,0,0,0.2)] p-5 border rounded-lg">
+            <Form {...form}>
+              <form className="flex flex-col gap-5">
+                <FormField
+                  control={form.control}
+                  name="departure"
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormControl>
+                        <ReactSelect
+                          icon={<MousePointer2 size={18}/>}
+                          options={LOCATIONS}
+                          value={LOCATIONS.find(
+                            (option) => option.value === field.value
+                          )}
+                          onChange={(selectedOption) => {
+                            field.onChange(selectedOption?.value);
+                          }}
+                          isRequired
+                          placeholder="Chọn điểm đi"
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="destination"
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormControl>
+                        <ReactSelect
+                          icon={<MapPin size={18} />}
+                          options={LOCATIONS}
+                          value={LOCATIONS.find(
+                            (option) => option.value === field.value
+                          )}
+                          onChange={(selectedOption) => {
+                            field.onChange(selectedOption?.value);
+                          }}
+                          isRequired
+                          placeholder="Chọn điểm đến"
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="dateStart"
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormControl>
+                        <DatePicker
+                          selected={field.value}
+                          onChange={(x) => field.onChange(x)}
+                          className="w-full h-[38px]"
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+
+                <Button>Tìm kiếm</Button>
+              </form>
+            </Form>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </div>
     </div>
   );
 }

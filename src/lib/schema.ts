@@ -40,3 +40,9 @@ export const scheduleSchema = z.object({
   price: z.number(),
   isActive: z.boolean(),
 });
+
+export const findTicketSchema = z.object({
+  departure: z.string().min(1, "Điểm khởi hành là bắt buộc"),
+  destination: z.string().min(1, "Điểm đến là bắt buộc"),
+  dateStart: z.date(),
+});

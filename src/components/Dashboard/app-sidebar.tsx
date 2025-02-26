@@ -5,12 +5,11 @@ import {
   AudioWaveform,
   Bus,
   Command,
-  Frame,
   GalleryVerticalEnd,
   LayoutDashboard,
   Map,
   PieChart,
-  Settings2,
+  Ticket,
   Users,
 } from "lucide-react";
 
@@ -119,9 +118,9 @@ const data = {
   ],
   projects: [
     {
-      name: "Design Engineering",
-      url: "#",
-      icon: Frame,
+      name: "Đặt vé",
+      url: "/ticket",
+      icon: Ticket,
     },
     {
       name: "Sales & Marketing",
