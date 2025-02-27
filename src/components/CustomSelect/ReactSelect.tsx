@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useId } from "react";
 import Select, { StylesConfig, components } from "react-select";
 import { Label } from "../ui/label";
 
@@ -75,7 +75,7 @@ export default function ReactSelect(props: IReactSelectProps) {
     disabled,
     icon,
   } = props;
-
+  const id = useId();
   return (
     <div>
       {label && (
@@ -84,6 +84,7 @@ export default function ReactSelect(props: IReactSelectProps) {
         </Label>
       )}
       <Select
+        id={id}
         isMulti={isMulti}
         options={options}
         value={value}
