@@ -4,66 +4,87 @@ import { Separator } from "@/components/ui/separator";
 import {
   DribbbleIcon,
   GithubIcon,
+  Inbox,
+  Locate,
+  Phone,
   TwitchIcon,
   TwitterIcon,
+  Webhook,
 } from "lucide-react";
 import Link from "next/link";
 
 const footerSections = [
   {
-    title: "Product",
+    title: "Tuyến xe phổ biến",
     links: [
       {
-        title: "Overview",
+        title: "BX Giáp Bát - Nông Cống",
         href: "#",
       },
       {
-        title: "Features",
+        title: "BX Giáp Bát - Như Thanh",
         href: "#",
       },
       {
-        title: "Solutions",
+        title: "BX Mỹ Đình - Nông Cống",
         href: "#",
       },
       {
-        title: "Tutorials",
+        title: "BX Gia Lâm - Nông Cống",
         href: "#",
       },
       {
-        title: "Pricing",
+        title: "BX Mỹ Đình - Như Thanh",
         href: "#",
       },
       {
-        title: "Releases",
+        title: "Nông Cống - Thái Nguyên",
+        href: "#",
+      },
+      {
+        title: "Nông Cống - Bắc Ninh",
         href: "#",
       },
     ],
   },
   {
-    title: "Resources",
+    title: "Hỗ trợ",
     links: [
       {
-        title: "Blog",
+        title: "Hướng dẫn đặt vé",
         href: "#",
       },
       {
-        title: "Newsletter",
+        title: "Hướng dẫn thanh toán",
         href: "#",
       },
       {
-        title: "Events",
+        title: "Chính sách đổi trả, hủy vé",
         href: "#",
       },
       {
-        title: "Help centre",
+        title: "Chính sách vận chuyển",
+        href: "#",
+      },
+    ],
+  },
+  {
+    title: "Về chúng tôi",
+    links: [
+      {
+        title: "Giới thiệu",
         href: "#",
       },
       {
-        title: "Tutorials",
+        title: "Liên hệ",
         href: "#",
       },
       {
-        title: "Support",
+        title: "Dịch vụ",
+        href: "#",
+      },
+      {
+        title: "Tuyển dụng",
         href: "#",
       },
     ],
@@ -76,8 +97,8 @@ const Footer03Page = () => {
       <div className="grow" />
       <footer>
         <div className="max-w-screen-xl mx-auto">
-          <div className="py-12 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-x-8 gap-y-10 px-6 xl:px-0">
-            <div className="col-span-full xl:col-span-2">
+          <div className="py-12 grid grid-cols-1 tablet:grid-cols-3 laptop:grid-cols-4 gap-x-8 gap-y-10 px-6 xl:px-0">
+            <div className="col-span-full laptop:col-span-1 ">
               {/* Logo */}
               <svg
                 id="logo-7"
@@ -97,18 +118,37 @@ const Footer03Page = () => {
                 />
               </svg>
 
-              <p className="mt-4 text-muted-foreground">
-                Design amazing digital experiences that create more happy in the
-                world.
-              </p>
+              <div className="mt-4 text-muted-foreground flex flex-col gap-2">
+                <h2 className="uppercase font-bold">
+                  Công ty TNHH Vận Tải Đông Lý
+                </h2>
+                <p className="text-sm text-justify">
+                  Chúng tôi cung cấp đặt vé nhanh chóng, lịch trình chính xác,
+                  và thanh toán an toàn. Xe đời mới, ghế ngồi êm ái, tài xế
+                  chuyên nghiệp đảm bảo chuyến đi thoải mái và an toàn. Hỗ trợ
+                  khách hàng 24/7, luôn đồng hành trên mọi hành trình!
+                </p>
+                {/* <div className="flex text-sm items-center gap-2">
+                  <Locate size={16} /> Số nhà ...
+                </div>
+                <div className="flex text-sm items-center gap-2">
+                  <Webhook size={16} /> Số nhà ...
+                </div>
+                <div className="flex text-sm items-center gap-2">
+                  <Phone size={16} /> Số nhà ...
+                </div>
+                <div className="flex text-sm items-center gap-2">
+                  <Inbox size={16} /> Số nhà ...
+                </div> */}
+              </div>
             </div>
 
             {footerSections.map(({ title, links }) => (
-              <div key={title}>
+              <div key={title} className="col-span-full tablet:col-span-1">
                 <h6 className="font-semibold">{title}</h6>
                 <ul className="mt-6 space-y-4">
                   {links.map(({ title, href }) => (
-                    <li key={title}>
+                    <li key={title} className="text-sm ">
                       <Link
                         href={href}
                         className="text-muted-foreground hover:text-foreground"
@@ -122,17 +162,17 @@ const Footer03Page = () => {
             ))}
 
             {/* Subscribe Newsletter */}
-            <div className="col-span-2">
-              <h6 className="font-semibold">Stay up to date</h6>
+            {/* <div className="col-span-2">
+              <h6 className="font-semibold">Đăng ký nhận thông tin</h6>
               <form className="mt-6 flex items-center gap-2">
                 <Input
                   type="email"
-                  placeholder="Enter your email"
+                  placeholder="Nhập email của bạn"
                   className="grow max-w-64"
                 />
-                <Button>Subscribe</Button>
+                <Button>Đăng ký</Button>
               </form>
-            </div>
+            </div> */}
           </div>
           <Separator />
           <div className="py-8 flex flex-col-reverse sm:flex-row items-center justify-between gap-x-2 gap-y-5 px-6 xl:px-0">

@@ -30,7 +30,15 @@ export default function Home() {
   return (
     <div className="min-h-screen ">
       <div className="relative ">
-        <div className="bg-white laptop:h-[600px] h-[700px] w-full"></div>
+        <div className="laptop:h-[600px] h-[700px] w-full">
+          <Image
+            src="https://res.cloudinary.com/deyszirfc/image/upload/v1739246961/cld-sample-2.jpg"
+            alt="Sample Image"
+            layout="fill"
+            objectFit="cover"
+            className="w-full h-full opacity-60"
+          />
+        </div>
         <div className="absolute top-[55%] tablet:top-1/2 laptop:top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2  px-5  flex items-center flex-col gap-5 laptop:flex-row laptop:justify-between w-full max-w-screen-xl ">
           <div className="flex flex-col gap-5 tablet:w-[500px] items-center laptop:items-start">
             <h3 className="text-center laptop:text-left text-3xl laptop:text-4xl uppercase font-bold text-[#424248] ">

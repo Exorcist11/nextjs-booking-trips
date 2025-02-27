@@ -28,7 +28,7 @@ export default function StepBuyTicket() {
   ];
 
   return (
-    <div className="px-5 flex flex-col gap-5 mb-10 max-w-screen-xl mx-auto">
+    <div className="px-5 flex flex-col gap-5 mb-10 max-w-screen-xl mx-auto mt-10">
       <div className="flex flex-col gap-5">
         <h3 className="font-bold text-3xl laptop:text-4xl text-center">
           Mua vé của bạn chỉ với 3 bước!

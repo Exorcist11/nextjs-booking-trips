@@ -16,48 +16,43 @@ import { useEffect, useState } from "react";
 const testimonials = [
   {
     id: 1,
-    name: "Nguyễn Văn Hưng",
-    designation: "Khách hàng",
-    company: "Cá nhân",
+    name: "Nguyễn Văn Hùng",
+    designation: "Khách hàng cá nhân",
     testimonial:
-      "Dịch vụ vận chuyển hành khách rất chuyên nghiệp! Xe sạch sẽ, ghế ngồi thoải mái, tài xế thân thiện và luôn đúng giờ. Tôi cảm thấy rất an tâm khi lựa chọn nhà xe này cho những chuyến đi xa.",
-    avatar: "https://randomuser.me/api/portraits/men/10.jpg",
+      "Dịch vụ rất chuyên nghiệp! Xe chạy đúng giờ, tài xế thân thiện, nhiệt tình. Tôi cảm thấy rất an toàn và thoải mái trong suốt hành trình.",
+    avatar: "https://randomuser.me/api/portraits/men/20.jpg",
   },
   {
     id: 2,
-    name: "Trần Thị Mai",
-    designation: "Chủ cửa hàng",
-    company: "Mai Store",
+    name: "Trần Thị Lan",
+    designation: "Nhân viên văn phòng",
     testimonial:
-      "Dịch vụ vận chuyển hàng hóa nhanh chóng, an toàn. Hàng của tôi luôn đến đúng hẹn và được bảo quản cẩn thận. Tôi hoàn toàn hài lòng và sẽ tiếp tục sử dụng dịch vụ.",
-    avatar: "https://randomuser.me/api/portraits/women/11.jpg",
+      "Ghế ngồi êm ái, không gian xe sạch sẽ và thoáng mát. Tôi thường xuyên đi công tác và rất hài lòng với chất lượng dịch vụ của công ty.",
+    avatar: "https://randomuser.me/api/portraits/women/21.jpg",
   },
   {
     id: 3,
-    name: "Phạm Quốc Anh",
-    designation: "Giám đốc điều hành",
-    company: "Du Lịch Xanh",
+    name: "Lê Minh Tuấn",
+    designation: "Khách du lịch",
     testimonial:
-      "Chúng tôi thường xuyên thuê xe du lịch cho khách hàng của mình. Xe luôn mới, tài xế chuyên nghiệp và giá cả hợp lý. Dịch vụ đặt xe cũng rất nhanh chóng và tiện lợi.",
-    avatar: "https://randomuser.me/api/portraits/men/12.jpg",
+      "Xe đời mới, chạy êm, không bị xóc. Hành trình rất thoải mái, có nước uống miễn phí và tài xế hỗ trợ hành lý rất nhiệt tình. Chắc chắn sẽ tiếp tục sử dụng dịch vụ!",
+    avatar: "https://randomuser.me/api/portraits/men/22.jpg",
   },
   {
     id: 4,
-    name: "Lê Minh Phúc",
-    designation: "Chuyên viên logistics",
-    company: "Vận Tải Nhanh",
+    name: "Phạm Thị Hạnh",
+    designation: "Chủ doanh nghiệp",
     testimonial:
-      "Dịch vụ vận chuyển xe cộ đáng tin cậy! Tôi đã gửi ô tô của mình đi tỉnh và nhận lại trong tình trạng nguyên vẹn, đúng lịch trình. Quá trình vận chuyển rất chuyên nghiệp và giá hợp lý.",
-    avatar: "https://randomuser.me/api/portraits/men/13.jpg",
+      "Tôi thường xuyên đặt vé cho nhân viên đi công tác. Nhà xe luôn đúng giờ, thái độ phục vụ chuyên nghiệp, giúp công ty tôi tiết kiệm nhiều thời gian di chuyển.",
+    avatar: "https://randomuser.me/api/portraits/women/23.jpg",
   },
   {
     id: 5,
-    name: "Hoàng Thị Lan",
-    designation: "Quản lý vận hành",
-    company: "Công ty Xuất Nhập Khẩu ABC",
+    name: "Hoàng Văn Dũng",
+    designation: "Khách hàng thường xuyên",
     testimonial:
-      "Chúng tôi đã ký hợp đồng vận tải dài hạn với công ty này và rất hài lòng. Hệ thống xe hiện đại, đội ngũ tài xế chuyên nghiệp và khả năng đáp ứng linh hoạt với nhu cầu vận chuyển của chúng tôi.",
-    avatar: "https://randomuser.me/api/portraits/women/14.jpg",
+      "Lần nào đi cũng thấy hài lòng! Hệ thống đặt vé nhanh gọn, xe luôn sạch sẽ, tài xế lái cẩn thận. Giá cả hợp lý, dịch vụ đáng tin cậy!",
+    avatar: "https://randomuser.me/api/portraits/men/24.jpg",
   },
 ];
 
