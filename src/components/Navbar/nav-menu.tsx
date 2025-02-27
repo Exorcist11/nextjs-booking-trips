@@ -30,7 +30,7 @@ export const NavMenu = (props: NavigationMenuProps) => {
                 className={cn(
                   "px-4 py-2  transition-all duration-300",
                   pathname === menu.path
-                    ? "tablet:border-b-2 laptop:border-b-2 desktop:border-b-2"
+                    ? "laptop:border-b-2 desktop:border-b-2"
                     : "text-gray-700 hover:bg-gray-200"
                 )}
               >

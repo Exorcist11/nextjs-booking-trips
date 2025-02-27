@@ -11,7 +11,7 @@ const Navbar04Page = () => {
           <Logo />
 
           {/* Desktop Menu */}
-          <NavMenu className="hidden md:block" />
+          <NavMenu className="hidden laptop:block" />
 
           <div className="flex items-center gap-3">
             <Button
@@ -22,7 +22,7 @@ const Navbar04Page = () => {
             </Button>
 
             {/* Mobile Menu */}
-            <div className="md:hidden">
+            <div className="laptop:hidden">
               <NavigationSheet />
             </div>
           </div>

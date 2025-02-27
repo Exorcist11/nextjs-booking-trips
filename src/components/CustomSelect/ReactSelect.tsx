@@ -25,6 +25,8 @@ const customStyles: StylesConfig<any, boolean> = {
     ...defaultStyles,
     fontSize: "14px",
     color: "#999",
+    position: "absolute",
+    marginLeft: "30px",
   }),
   control: (defaultStyles) => ({
     ...defaultStyles,
