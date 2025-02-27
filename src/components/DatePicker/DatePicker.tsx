@@ -50,6 +50,7 @@ const DatePicker: React.FC<DatePickerProps> = (props: DatePickerProps) => {
               setOpen(false);
             }}
             initialFocus
+            locale={vi}
           />
         </PopoverContent>
       </Popover>

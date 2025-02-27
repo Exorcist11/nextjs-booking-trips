@@ -11,7 +11,7 @@ import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { LOCATIONS } from "@/constants/location";
 import { findTicketSchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { MapPin, MousePointer2 } from "lucide-react";
+import { MapPin, MousePointer2, Search } from "lucide-react";
 import Image from "next/image";
 
 import { useForm } from "react-hook-form";
@@ -31,9 +31,9 @@ export default function Home() {
     <div className="min-h-screen ">
       <div className="relative ">
         <div className="bg-white laptop:h-[600px] h-[700px] w-full"></div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2  px-5  flex items-center flex-col gap-5 laptop:flex-row laptop:justify-between w-full max-w-screen-xl ">
+        <div className="absolute top-[55%] tablet:top-1/2 laptop:top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2  px-5  flex items-center flex-col gap-5 laptop:flex-row laptop:justify-between w-full max-w-screen-xl ">
           <div className="flex flex-col gap-5 tablet:w-[500px] items-center laptop:items-start">
-            <h3 className="text-center laptop:text-left text-3xl laptop:text-4xl uppercase font-bold text-[#424248]">
+            <h3 className="text-center laptop:text-left text-3xl laptop:text-4xl uppercase font-bold text-[#424248] ">
               Đặt vé trực tuyến tiện lợi, an toàn và dễ dàng.
             </h3>
 
@@ -114,7 +114,9 @@ export default function Home() {
                     )}
                   />
 
-                  <Button>Tìm kiếm</Button>
+                  <Button className="h-[38px]">
+                    <Search /> Tìm kiếm
+                  </Button>
                 </form>
               </Form>
             </div>
