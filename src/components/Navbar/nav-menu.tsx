@@ -14,10 +14,10 @@ export const NavMenu = (props: NavigationMenuProps) => {
   const pathname = usePathname();
   const menus = [
     { path: "/", label: "Trang chủ" },
-    { path: "/blogs", label: "Tin tức" },
-    { path: "/about", label: "Giới thiệu" },
-    { path: "/services", label: "Dịch vụ" },
-    { path: "/contact", label: "Liên hệ" },
+    { path: "/tin-tuc", label: "Tin tức" },
+    { path: "/gioi-thieu", label: "Giới thiệu" },
+    { path: "/dich-vu", label: "Dịch vụ" },
+    { path: "/lien-he", label: "Liên hệ" },
   ];
   return (
     <NavigationMenu {...props}>
