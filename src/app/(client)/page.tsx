@@ -45,7 +45,7 @@ export default function Home() {
               Đặt vé trực tuyến tiện lợi, an toàn và dễ dàng.
             </h3>
 
-            <Button className="px-4 py-3 bg-red-500 uppercase font-semibold h-12 laptop:w-[170px] w-[150px] ">
+            <Button className="px-4 py-3 bg-red-500 uppercase font-semibold h-12 laptop:w-[170px] w-[150px] " onClick={() => window.location.href = "/dat-ve"} >
               Đặt vé ngay
             </Button>
           </div>
