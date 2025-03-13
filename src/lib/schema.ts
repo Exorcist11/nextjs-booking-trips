@@ -37,6 +37,7 @@ export const scheduleSchema = z.object({
   route: z.string().min(1, "Tuyến đường là bắt buộc"),
   car: z.string().min(1, "Vui lòng chọn xe di chuyển"),
   departureTime: z.string(),
+  destinationTime: z.string(),
   price: z.number(),
   isActive: z.boolean(),
 });

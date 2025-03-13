@@ -21,12 +21,12 @@ interface IReactSelectProps {
 }
 
 const customStyles: StylesConfig<any, boolean> = {
-  placeholder: (defaultStyles) => ({
+  placeholder: (defaultStyles, { selectProps }: any) => ({
     ...defaultStyles,
     fontSize: "14px",
     color: "#999",
     position: "absolute",
-    marginLeft: "30px",
+    marginLeft: selectProps.icon ? "30px" : "4px",
   }),
   control: (defaultStyles) => ({
     ...defaultStyles,

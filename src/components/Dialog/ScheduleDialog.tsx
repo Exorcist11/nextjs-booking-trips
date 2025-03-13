@@ -55,6 +55,7 @@ export default function ScheduleDialog(props: IScheduleProps) {
     defaultValues: {
       car: "",
       departureTime: "",
+      destinationTime: "",
       price: 0,
       route: "",
       isActive: true,
@@ -218,24 +219,45 @@ export default function ScheduleDialog(props: IScheduleProps) {
                     )}
                   />
 
-                  <FormField
-                    control={form.control}
-                    name="departureTime"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <InputWithLabel
-                            {...field}
-                            placeholder="Giờ khởi hành"
-                            title="Giờ khởi hành"
-                            type="text"
-                            disable={type === ACTION.VIEW}
-                            isRequired
-                          />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
+                  <div className="flex items-center gap-5 w-full justify-between">
+                    <FormField
+                      control={form.control}
+                      name="departureTime"
+                      render={({ field }) => (
+                        <FormItem className="w-full">
+                          <FormControl>
+                            <InputWithLabel
+                              {...field}
+                              placeholder="Giờ khởi hành"
+                              title="Giờ khởi hành"
+                              type="text"
+                              disable={type === ACTION.VIEW}
+                              isRequired
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="destinationTime"
+                      render={({ field }) => (
+                        <FormItem className="w-full">
+                          <FormControl>
+                            <InputWithLabel
+                              {...field}
+                              placeholder="Giờ cập bến"
+                              title="Giờ cập bến"
+                              type="text"
+                              disable={type === ACTION.VIEW}
+                              isRequired
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                  </div>
 
                   <FormField
                     control={form.control}
@@ -250,7 +272,13 @@ export default function ScheduleDialog(props: IScheduleProps) {
                             type="number"
                             disable={type === ACTION.VIEW}
                             isRequired
-                            value={field.value.toString()}
+                            value={field.value}
+                            onChange={(e) => {
+                              const value = e.target.value
+                                ? Number(e.target.value)
+                                : "";
+                              field.onChange(value);
+                            }}
                           />
                         </FormControl>
                       </FormItem>
