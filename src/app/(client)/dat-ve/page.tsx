@@ -136,6 +136,7 @@ export default function page() {
         <div className="mt-10 flex flex-col gap-5 tablet:mt-16">
           {Array.from({ length: 5 }).map((item, index) => (
             <div
+              key={index}
               className={cx(
                 "border rounded-lg p-6",
                 index % 2 !== 0 && "bg-[#f7f7f7]"
@@ -168,7 +169,10 @@ export default function page() {
 
                 <div className="col-span-1 tablet:col-span-2 laptop:col-span-1 flex flex-col gap-2 tablet:flex-row tablet:justify-between tablet:items-center">
                   <h3 className="font-bold text-lg w-1/2">200.000 VND</h3>
-                  <Button className="w-1/2" onClick={() => setOpen(true)}>
+                  <Button
+                    className="tablet:w-1/2"
+                    onClick={() => setOpen(true)}
+                  >
                     <Ticket /> Đặt vé ngay
                   </Button>
                 </div>

@@ -47,7 +47,7 @@ export default function TripDialog(props: IDialogProps) {
   const onDelete = async () => {
     try {
       startLoading();
-      if (type === ACTION.DELETE) {
+      if (type === ACTION.DELETE ) {
         await deleteRoute(id);
       }
     } catch (error) {
