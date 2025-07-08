@@ -21,7 +21,7 @@ export const NavMenu = (props: NavigationMenuProps) => {
   ];
   return (
     <NavigationMenu {...props}>
-      <NavigationMenuList className="gap-6 space-x-0 data-[orientation=vertical]:flex-col data-[orientation=vertical]:items-start">
+      <NavigationMenuList className="gap-3 space-x-0 data-[orientation=vertical]:flex-col data-[orientation=vertical]:items-start">
         {menus.map((menu) => (
           <NavigationMenuItem key={menu.path}>
             <NavigationMenuLink asChild>

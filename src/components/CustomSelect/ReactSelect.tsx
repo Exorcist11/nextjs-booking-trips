@@ -1,6 +1,16 @@
+"use client";
+
 import React, { useId } from "react";
-import Select, { StylesConfig, components } from "react-select";
+import dynamic from "next/dynamic";
 import { Label } from "../ui/label";
+import { StylesConfig, components } from "react-select";
+
+const Select = dynamic(
+  () => import("react-select").then((mod) => mod.default),
+  {
+    ssr: false,
+  }
+);
 
 export type OptionsSelect = {
   value: string;
@@ -34,6 +44,7 @@ const customStyles: StylesConfig<any, boolean> = {
     display: "flex",
     alignItems: "center",
     paddingLeft: "8px", // Giúp text không bị dính vào icon
+    height: "45px",
   }),
   option: (base, { isFocused }) => ({
     ...base,
@@ -76,14 +87,16 @@ export default function ReactSelect(props: IReactSelectProps) {
     icon,
   } = props;
   const id = useId();
+
   return (
     <div>
       {label && (
-        <Label className="font-bold">
+        <Label htmlFor={id} className="font-bold">
           {label} {isRequired && <span className="text-red-500">*</span>}
         </Label>
       )}
       <Select
+        instanceId={id} // Use consistent instanceId to prevent ID mismatches
         id={id}
         isMulti={isMulti}
         options={options}

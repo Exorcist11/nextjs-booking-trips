@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Footer03Page from "@/components/Footer";
-import Navbar04Page from "@/components/Navbar/navbar";
+import NavbarCustom from "@/components/Navbar/navbar";
 
 import { ArrowUpFromLine } from "lucide-react";
 
@@ -32,7 +32,7 @@ export default function ClientLayout({
 
   return (
     <div>
-      <Navbar04Page />
+      <NavbarCustom />
       {children}
       <Footer03Page />
 

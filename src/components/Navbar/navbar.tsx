@@ -2,27 +2,28 @@ import { Button } from "@/components/ui/button";
 import { NavMenu } from "./nav-menu";
 import { Logo } from "./logo";
 import { NavigationSheet } from "./navigation-sheet";
+import { SunIcon } from "lucide-react";
 
-const Navbar04Page = () => {
+const NavbarCustom = () => {
   return (
-    <div className="">
-      <nav className="fixed top-6 inset-x-4 h-16 bg-background border dark:border-slate-700/70 max-w-screen-xl mx-auto rounded-full z-50">
-        <div className="h-full flex items-center justify-between mx-auto px-4">
-          <Logo />
-
-          {/* Desktop Menu */}
-          <NavMenu className="hidden laptop:block" />
-
+    <div className="bg-muted fixed top-0 z-10 inset-x-0">
+      <nav className="h-16 bg-background border-b">
+        <div className="h-full flex items-center justify-between max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center gap-8">
+            <Logo />
+            {/* Desktop Menu */}
+            <NavMenu className="hidden md:block" />
+          </div>
           <div className="flex items-center gap-3">
-            <Button
-              variant="outline"
-              className="hidden sm:inline-flex rounded-full"
-            >
+            <Button variant="outline" className="hidden sm:inline-flex">
               Sign In
             </Button>
-
+            <Button>Sign Up</Button>
+            <Button size="icon" variant="outline">
+              <SunIcon />
+            </Button>
             {/* Mobile Menu */}
-            <div className="laptop:hidden">
+            <div className="md:hidden">
               <NavigationSheet />
             </div>
           </div>
@@ -32,4 +33,4 @@ const Navbar04Page = () => {
   );
 };
 
-export default Navbar04Page;
+export default NavbarCustom;
