@@ -11,13 +11,17 @@ import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { LOCATIONS } from "@/constants/location";
 import { findTicketSchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { format } from "date-fns";
 import { MapPin, MousePointer2, Search } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 export default function Home() {
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof findTicketSchema>>({
     resolver: zodResolver(findTicketSchema),
     defaultValues: {
@@ -27,8 +31,20 @@ export default function Home() {
     },
   });
 
+  const onSubmit = async (data: z.infer<typeof findTicketSchema>) => {
+    const timeZone = "Asia/Ho_Chi_Minh";
+
+    const searchParams = new URLSearchParams({
+      startLocation: data.departure,
+      endLocation: data.destination,
+      date: format(data.dateStart, "yyyy-MM-dd"),
+    });
+
+    router.push(`/dat-ve?${searchParams.toString()}`);
+  };
+
   return (
-    <div className="min-h-screen ">
+    <div className="min-h-screen overflow-scroll hide-scrollbar">
       <div className="relative ">
         <div className="relative w-full h-[700px] laptop:h-[800px]">
           <Image
@@ -48,7 +64,10 @@ export default function Home() {
 
             <div className="w-full shadow-[0_3px_10px_rgb(0,0,0,0.2)] p-5 laptop:w-[600px] laptop:py-8 laptop:px-4 rounded-lg bg-white/25 backdrop-blur">
               <Form {...form}>
-                <form className="flex flex-col gap-5">
+                <form
+                  className="flex flex-col gap-5"
+                  onSubmit={form.handleSubmit(onSubmit)}
+                >
                   <div className="flex flex-col gap-5 tablet:flex-row tablet:gap-2">
                     <FormField
                       control={form.control}

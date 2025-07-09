@@ -1,3 +1,5 @@
+import { ICarTripResponse } from "./car.interface";
+
 export interface ITrip {
   availableSeats: number;
   bookedSeats: string[];
@@ -13,4 +15,42 @@ export interface ITripResponse {
   limit: number;
   index: number;
   total: number;
+}
+
+export interface IParamsTripDaily {
+  startLocation: string;
+  endLocation: string;
+  date: string;
+  page: number;
+  limit: number;
+}
+
+export interface IParamsGetTripSchedule {
+  departure?: string;
+  destination?: string;
+  departureTime?: string;
+  limit?: number;
+  index?: number;
+  order?: string;
+  sort?: "asc" | "desc";
+}
+
+export interface ITripResponse {
+  actualArrivalTime: string;
+  actualDepartureTime: string;
+  availableSeats: string[];
+  bookedSeats: string[];
+  car: ICarTripResponse;
+  createdAt: string;
+  date: string;
+  departureTime: string;
+  duration: string;
+  endLocation: string;
+  id: string;
+  note: string;
+  price: number;
+  startLocation: string;
+  template: string;
+  updatedAt: string;
+  status: string;
 }

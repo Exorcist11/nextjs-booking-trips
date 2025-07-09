@@ -4,7 +4,7 @@ import { findTicketSchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { date, z } from "zod";
 import ReactSelect from "@/components/CustomSelect/ReactSelect";
 import {
   ArrowRight,
@@ -18,30 +18,63 @@ import { LOCATIONS } from "@/constants/location";
 import DatePicker from "@/components/DatePicker/DatePicker";
 import { Button } from "@/components/ui/button";
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Copy } from "lucide-react";
-import { getNextDays } from "@/utils/getListDay";
 import { cx } from "class-variance-authority";
 import { Progress } from "@/components/ui/progress";
 import SelectSeatDialog from "@/components/Dialog/SelectSeatDialog";
+import { useRouter, useSearchParams } from "next/navigation";
+import {
+  calculateArrivalTime,
+  decodeURLParam,
+  formatDurationWithDateFns,
+} from "@/utils/urlHelpers";
+import { getClientTrips } from "@/services/trips";
+import { IParamsTripDaily, ITripResponse } from "@/interface/trip.interface";
 
 export default function page() {
   const [open, setOpen] = React.useState<boolean>(false);
+  const [progress, setProgress] = React.useState(13);
+  const [trips, setTrips] = React.useState<ITripResponse[]>([]);
+
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const rawStartLocation = searchParams.get("startLocation");
+  const rawEndLocation = searchParams.get("endLocation");
+  const rawDate = searchParams.get("date");
+
   const form = useForm<z.infer<typeof findTicketSchema>>({
     resolver: zodResolver(findTicketSchema),
     defaultValues: {
       dateStart: new Date(),
-      departure: "",
-      destination: "",
+      departure: decodeURLParam(rawStartLocation),
+      destination: decodeURLParam(rawEndLocation),
     },
   });
 
-  const [progress, setProgress] = React.useState(13);
+  const fetchTrips = async () => {
+    const params: IParamsTripDaily = {
+      startLocation: decodeURLParam(rawStartLocation),
+      endLocation: decodeURLParam(rawEndLocation),
+      date: rawDate ?? "",
+      page: 1,
+      limit: 10,
+    };
+    try {
+      const response: ITripResponse[] = await getClientTrips(params);
+      setTrips(response);
+    } catch (error) {
+      console.log("Error fetching trips: ", error);
+    }
+  };
 
   React.useEffect(() => {
     const timer = setTimeout(() => setProgress(66), 500);
     return () => clearTimeout(timer);
   }, []);
+
+  React.useEffect(() => {
+    fetchTrips();
+  }, [rawStartLocation, rawEndLocation, rawDate]);
 
   return (
     <div className="min-h-screen">
@@ -68,6 +101,7 @@ export default function page() {
                           }}
                           isRequired
                           placeholder="Chọn điểm đi"
+
                         />
                       </FormControl>
                     </FormItem>
@@ -106,14 +140,14 @@ export default function page() {
                         <DatePicker
                           selected={field.value}
                           onChange={(x) => field.onChange(x)}
-                          className="w-full h-[38px]"
+                          className="w-full h-[45px]"
                         />
                       </FormControl>
                     </FormItem>
                   )}
                 />
 
-                <Button className="h-[38px] font-bold">
+                <Button className="h-[45px] font-bold">
                   <Search /> Tìm kiếm
                 </Button>
               </form>
@@ -134,7 +168,7 @@ export default function page() {
         </div> */}
 
         <div className="mt-10 flex flex-col gap-5 tablet:mt-16">
-          {Array.from({ length: 5 }).map((item, index) => (
+          {trips?.map((item, index) => (
             <div
               key={index}
               className={cx(
@@ -148,27 +182,43 @@ export default function page() {
                     Vận tải đông lý
                   </h3>
                   <div className="flex items-center gap-2">
-                    <Bus size={20} /> <p>Xe 44 chỗ</p>
+                    <Bus size={20} />{" "}
+                    <p>{`Xe ${item.car.seatingCapacity} chỗ`}</p>
                   </div>
                 </div>
 
                 <div className="col-span-1 flex gap-9 items-center w-full">
                   <div className="flex flex-col gap-2 tablet:items-center">
-                    <h3 className="font-bold text-lg">08:00 AM</h3>
-                    <p>Hà Nội</p>
+                    <h3 className="font-bold text-lg">
+                      {item.departureTime} AM
+                    </h3>
+                    <p>{item.startLocation}</p>
                   </div>
                   <div className="flex flex-col gap-2 justify-center items-center">
                     <ArrowRight color="blue" />
-                    <p>3h00m</p>
+                    <p>
+                      {formatDurationWithDateFns(
+                        Number(item.duration),
+                        "HH:mm"
+                      )}
+                    </p>
                   </div>
                   <div className="flex flex-col gap-2 tablet:items-center">
-                    <h3 className="font-bold text-lg">08:00 AM</h3>
-                    <p>Hà Nội</p>
+                    <h3 className="font-bold text-lg">
+                      {calculateArrivalTime(
+                        item.departureTime,
+                        Number(item.duration)
+                      )}{" "}
+                      AM
+                    </h3>
+                    <p>{item.endLocation}</p>
                   </div>
                 </div>
 
                 <div className="col-span-1 tablet:col-span-2 laptop:col-span-1 flex flex-col gap-2 tablet:flex-row tablet:justify-between tablet:items-center">
-                  <h3 className="font-bold text-lg w-1/2">200.000 VND</h3>
+                  <h3 className="font-bold text-lg w-1/2">
+                    {item.price.toLocaleString()} VND
+                  </h3>
                   <Button
                     className="tablet:w-1/2"
                     onClick={() => setOpen(true)}
@@ -180,10 +230,16 @@ export default function page() {
               <div className="pt-4">
                 <div className="flex flex-col justify-center items-center">
                   <p className="text-xs font-semibold">
-                    Còn <span className="text-red-500">24</span>/24 chỗ
+                    Còn{" "}
+                    <span className="text-red-500">
+                      {item.car.seatingCapacity - item.bookedSeats.length}
+                    </span>
+                    /{item.car.seatingCapacity} chỗ
                   </p>
                   <Progress
-                    value={progress}
+                    value={
+                      (item.bookedSeats.length / item.car.seatingCapacity) * 100
+                    }
                     className="w-[60%] [&>div]:bg-gradient-to-r [&>div]:from-cyan-400 [&>div]:via-sky-500 [&>div]:to-indigo-500 [&>div]:rounded-l-full"
                   />
                 </div>

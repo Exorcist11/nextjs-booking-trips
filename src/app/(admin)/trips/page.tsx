@@ -7,7 +7,7 @@ import { ACTION } from "@/constants/action";
 import { LOCATIONS } from "@/constants/location";
 import useLoadingStore from "@/hooks/useLoading";
 
-import { getAllTrips, IParamsGetTripSchedule } from "@/services/trips";
+import { getAllTrips } from "@/services/trips";
 import { debounce } from "lodash";
 import { Eye, Search } from "lucide-react";
 import React from "react";
@@ -150,7 +150,7 @@ export default function page() {
 
   const getTrips = async (pageIndex: number) => {
     startLoading();
-    const params: IParamsGetTripSchedule = {
+    const params: any = {
       limit: pageSize,
       index: pageIndex,
       sort: "asc",

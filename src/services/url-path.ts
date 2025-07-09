@@ -13,6 +13,7 @@ const URL_PATHS = {
   ROUTE: "/route",
   GET_ROUTE_BY_ID: "/route/getRouteById",
   TRIPS: "/trips",
+  CLINET_TRIPS: "/trips/daily",
   GET_TRIPS_BY_ID: "/trips/getTripById",
 
   GET_ALL_SCHEDULE: "/schedule/getAllSchedule",

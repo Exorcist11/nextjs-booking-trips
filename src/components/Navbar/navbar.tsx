@@ -9,7 +9,10 @@ const NavbarCustom = () => {
     <div className="bg-muted fixed top-0 z-10 inset-x-0">
       <nav className="h-16 bg-background border-b">
         <div className="h-full flex items-center justify-between max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-8">
+          <div
+            className="flex items-center gap-8 cursor-pointer"
+            onClick={() => (window.location.href = "/")}
+          >
             <Logo />
             {/* Desktop Menu */}
             <NavMenu className="hidden md:block" />

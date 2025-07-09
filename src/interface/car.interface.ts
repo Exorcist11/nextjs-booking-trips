@@ -14,3 +14,10 @@ export interface ICarResponse {
   index: number;
   total: number;
 }
+
+export interface ICarTripResponse {
+  licensePlate: string;
+  mainDriver: string;
+  seats: string[];
+  seatingCapacity: number;
+}
