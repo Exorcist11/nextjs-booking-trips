@@ -1,7 +1,7 @@
 import { IRoute } from "@/interface/route.interface";
 import axiosInstance from "../api-services";
-import { IParamsGetTripSchedule } from "../trips";
 import URL_PATHS from "../url-path";
+import { IParamsGetTripSchedule } from "@/interface/trip.interface";
 
 export const getAllRoute = async (params?: IParamsGetTripSchedule) => {
   try {
