@@ -54,16 +54,12 @@ export default function TicketBooking() {
   }, [rawStartLocation, rawEndLocation, rawDate]);
 
   return (
-    <div className="min-h-screen">
-      <div className="tablet:h-64 h-52 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-[#083358] via-[#0f4471] to-[#fc3c3c]"></div>
-      <div className="relative max-w-screen-xl mx-auto">
-        <div className="bg-transparent absolute w-full px-4 -top-14 tablet:-top-15 laptop:-top-10">
+    <div className="min-h-screen pt-20 laptop:pt-16">
+      <div className="flex-col gap-10 max-w-screen-xl mx-auto px-4 flex laptop:gap-5 laptop:flex-row laptop:mt-10 ">
+        <div className="laptop:w-2/6 laptop:sticky laptop:top-20 h-fit">
           <SearchTrip form={form} />
         </div>
-      </div>
-
-      <div className="mt-56 laptop:mt-10 max-w-screen-xl mx-auto px-4">
-        <div className="mt-10 flex flex-col gap-5 tablet:mt-16">
+        <div className=" laptop:w-4/6 flex flex-col gap-5 ">
           {trips?.map((item, index) => (
             <TripItem
               index={index}

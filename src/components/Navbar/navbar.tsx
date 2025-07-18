@@ -15,7 +15,7 @@ const NavbarCustom = () => {
           >
             <Logo />
             {/* Desktop Menu */}
-            <NavMenu className="hidden md:block" />
+            <NavMenu className="hidden laptop:block" />
           </div>
           <div className="flex items-center gap-3">
             <Button variant="outline" className="hidden sm:inline-flex">
@@ -26,7 +26,7 @@ const NavbarCustom = () => {
               <SunIcon />
             </Button>
             {/* Mobile Menu */}
-            <div className="md:hidden">
+            <div className="laptop::hidden">
               <NavigationSheet />
             </div>
           </div>

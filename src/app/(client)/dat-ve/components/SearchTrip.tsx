@@ -15,9 +15,9 @@ interface ISearchTrip {
 
 export default function SearchTrip({ form }: ISearchTrip) {
   return (
-    <div className="border rounded-lg bg-white p-4">
+    <div className="border rounded-lg bg-white p-4 w-full">
       <Form {...form}>
-        <form className="grid grid-cols-1 laptop:grid-cols-4 gap-5">
+        <form className="grid grid-cols-1 gap-5">
           <FormField
             control={form.control}
             name="departure"
