@@ -12,10 +12,12 @@ import { getClientTrips } from "@/services/trips";
 import { IParamsTripDaily, ITripResponse } from "@/interface/trip.interface";
 import TripItem from "./TripItem";
 import SearchTrip from "./SearchTrip";
+import useLoadingStore from "@/hooks/useLoading";
+import { Loader2 } from "lucide-react";
 
 export default function TicketBooking() {
   const [open, setOpen] = React.useState<boolean>(false);
-
+  const { stopLoading, loading, startLoading } = useLoadingStore();
   const [trips, setTrips] = React.useState<ITripResponse[]>([]);
 
   const searchParams = useSearchParams();
@@ -41,11 +43,14 @@ export default function TicketBooking() {
       page: 1,
       limit: 10,
     };
+    startLoading();
     try {
       const response: ITripResponse[] = await getClientTrips(params);
       setTrips(response);
     } catch (error) {
       console.log("Error fetching trips: ", error);
+    } finally {
+      stopLoading();
     }
   };
 
@@ -60,14 +65,21 @@ export default function TicketBooking() {
           <SearchTrip form={form} />
         </div>
         <div className=" laptop:w-4/6 flex flex-col gap-5 ">
-          {trips?.map((item, index) => (
-            <TripItem
-              index={index}
-              onSelect={() => setOpen(true)}
-              trip={item}
-              key={index}
-            />
-          ))}
+          {loading ? (
+            <div className="flex justify-center p-4">
+              <Loader2 className="h-6 w-6 animate-spin text-gray-500" />
+              <span className="ml-2">Đang tải danh sách chuyến đi...</span>
+            </div>
+          ) : (
+            trips.map((item, index) => (
+              <TripItem
+                index={index}
+                onSelect={() => setOpen(true)}
+                trip={item}
+                key={index}
+              />
+            ))
+          )}
         </div>
       </div>
 
