@@ -73,6 +73,21 @@ export default {
         laptop: "1024px", // Laptop nhỏ
         desktop: "1280px", // Màn hình lớn
       },
+      keyframes: {
+        motion: {
+          "0%": { transform: "translateX(0px)" },
+          "50%": { transform: "translateY(3px)" },
+          "100%": { transform: "translateY(0px)" },
+        },
+        roadAnimation: {
+          "0%": { transform: "translateX(0px)" },
+          "100%": { transform: "translateX(-350px)" },
+        },
+      },
+      animation: {
+        motion: "motion 1s linear infinite",
+        road: "roadAnimation 1.4s linear infinite",
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],
