@@ -14,6 +14,7 @@ import TripItem from "./TripItem";
 import SearchTrip from "./SearchTrip";
 import useLoadingStore from "@/hooks/useLoading";
 import { Loader2 } from "lucide-react";
+import LoadingWrapper from "@/components/Loading/LoadingWrapper";
 
 export default function TicketBooking() {
   const [open, setOpen] = React.useState<boolean>(false);
@@ -59,31 +60,26 @@ export default function TicketBooking() {
   }, [rawStartLocation, rawEndLocation, rawDate]);
 
   return (
-    <div className="min-h-screen pt-20 laptop:pt-16">
-      <div className="flex-col gap-10 max-w-screen-xl mx-auto px-4 flex laptop:gap-5 laptop:flex-row laptop:mt-10 ">
-        <div className="laptop:w-2/6 laptop:sticky laptop:top-20 h-fit">
-          <SearchTrip form={form} />
-        </div>
-        <div className=" laptop:w-4/6 flex flex-col gap-5 ">
-          {loading ? (
-            <div className="flex justify-center p-4">
-              <Loader2 className="h-6 w-6 animate-spin text-gray-500" />
-              <span className="ml-2">Đang tải danh sách chuyến đi...</span>
-            </div>
-          ) : (
-            trips.map((item, index) => (
+    <LoadingWrapper loading={loading}>
+      <div className="min-h-screen pt-20 laptop:pt-16">
+        <div className="flex-col gap-10 max-w-screen-xl mx-auto px-4 flex laptop:gap-5 laptop:flex-row laptop:mt-10 ">
+          <div className="laptop:w-2/6 laptop:sticky laptop:top-20 h-fit">
+            <SearchTrip form={form} />
+          </div>
+          <div className=" laptop:w-4/6 flex flex-col gap-5 ">
+            {trips.map((item, index) => (
               <TripItem
                 index={index}
                 onSelect={() => setOpen(true)}
                 trip={item}
                 key={index}
               />
-            ))
-          )}
+            ))}
+          </div>
         </div>
-      </div>
 
-      {open && <SelectSeatDialog open={open} setOpen={setOpen} />}
-    </div>
+        {open && <SelectSeatDialog open={open} setOpen={setOpen} />}
+      </div>
+    </LoadingWrapper>
   );
 }
