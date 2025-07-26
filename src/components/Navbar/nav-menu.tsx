@@ -19,6 +19,7 @@ export const NavMenu = (props: NavigationMenuProps) => {
     { path: "/dich-vu", label: "Dịch vụ" },
     { path: "/lien-he", label: "Liên hệ" },
   ];
+
   return (
     <NavigationMenu {...props}>
       <NavigationMenuList className="gap-3 space-x-0 data-[orientation=vertical]:flex-col data-[orientation=vertical]:items-start">
@@ -28,10 +29,11 @@ export const NavMenu = (props: NavigationMenuProps) => {
               <Link
                 href={menu.path}
                 className={cn(
-                  "px-4 py-2  transition-all duration-300",
+                  "relative inline-block px-4 py-2 transition-all duration-200 cursor-pointer",
                   pathname === menu.path
-                    ? "laptop:border-b-2 desktop:border-b-2 laptop:font-bold desktop:font-bold"
-                    : "text-gray-700 hover:bg-gray-200 hover:rounded-lg"
+                    ? "text-highlight laptop:font-bold desktop:font-bold"
+                    : "text-textInverse",
+                  "before:content-[''] before:absolute before:left-0 before:bottom-0 before:h-[2px] before:w-0 before:bg-highlight before:transition-all before:duration-300 hover:before:w-full"
                 )}
               >
                 {menu.label}

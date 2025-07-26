@@ -9,6 +9,7 @@ import { Menu } from "lucide-react";
 import { Logo } from "./logo";
 import { NavMenu } from "./nav-menu";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+import Link from "next/link";
 
 export const NavigationSheet = () => {
   return (
@@ -18,11 +19,16 @@ export const NavigationSheet = () => {
           <Menu />
         </Button>
       </SheetTrigger>
-      <SheetContent aria-label="Navigation">
+      <SheetContent
+        aria-label="Navigation"
+        className="bg-darkBurgundy border-l-0"
+      >
         <VisuallyHidden>
           <SheetTitle>Navigation</SheetTitle>
         </VisuallyHidden>
-        <Logo />
+    <Link href="/">
+      <Logo />
+    </Link>
         <NavMenu orientation="vertical" className="mt-12" />
       </SheetContent>
     </Sheet>

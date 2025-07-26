@@ -44,36 +44,43 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen overflow-scroll hide-scrollbar">
+    <div className=" overflow-scroll hide-scrollbar">
       <div className="relative ">
-        <div className="relative w-full h-[700px] laptop:h-[800px]">
+        <div className="relative w-full h-[700px] laptop:h-[800px]  ">
           <Image
-            src="https://res.cloudinary.com/deyszirfc/image/upload/v1751970871/bmw-5-series-2-3840x2160_ctn2rz.jpg"
+            src="https://res.cloudinary.com/deyszirfc/image/upload/v1753519381/bg-web_qxaf35.avif"
             alt="Sample Image"
             layout="fill"
             objectFit="cover"
             className="object-center"
           />
+          <div className="absolute inset-0 bg-gradient-to-b from-[rgba(0,0,0,0.4)] via-[rgba(192,0,35,0.8)] to-[rgba(0,0,0,0.7)]" />
         </div>
 
-        <div className="text-white absolute top-[55%] tablet:top-1/2 laptop:top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2  px-5  flex items-center flex-col gap-5 laptop:flex-row laptop:justify-between w-full max-w-screen-xl ">
-          <div className="flex flex-col gap-5 w-full tablet:w-[500px] laptop:w-[700px] ">
-            <h3 className="text-center laptop:text-left text-3xl laptop:text-4xl uppercase font-bold ">
-              Chọn vé của bạn
+        <div className="text-white absolute top-[55%] tablet:top-1/2 laptop:top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2  px-5  flex items-center flex-col gap-5 w-full max-w-screen-xl ">
+          <div className="flex flex-col justify-center items-center gap-5 laptop:gap-8 w-full ">
+            <h1 className="font-bold text-center text-4xl laptop:text-6xl uppercase text-highlight">
+              Nhà xe đông lý
+            </h1>
+
+            <h3 className="text-center laptop:text-left text-2xl laptop:text-3xl uppercase font-bold text-[#FFEDB3]">
+              Đặt vé nhanh – Đi xe xịn – An tâm trên từng chặng đường
             </h3>
 
-            <div className="w-full shadow-[0_3px_10px_rgb(0,0,0,0.2)] p-5 laptop:w-[600px] laptop:py-8 laptop:px-4 rounded-lg bg-white/25 backdrop-blur">
+            <div className="w-full max-w-[900px] p-5 laptop:p-8 rounded-lg bg-zinc-100/20 backdrop-blur shadow-[0_3px_10px_rgb(0,0,0,0.2)] mx-auto">
               <Form {...form}>
                 <form
-                  className="flex flex-col gap-5"
                   onSubmit={form.handleSubmit(onSubmit)}
+                  className="flex flex-col gap-6"
                 >
-                  <div className="flex flex-col gap-5 tablet:flex-row tablet:gap-2">
+          
+                  <div className="grid grid-cols-1 tablet:grid-cols-2 gap-4">
+            
                     <FormField
                       control={form.control}
                       name="departure"
                       render={({ field }) => (
-                        <FormItem className="w-full">
+                        <FormItem>
                           <FormControl>
                             <ReactSelect
                               icon={<MousePointer2 size={18} color="#000" />}
@@ -81,22 +88,23 @@ export default function Home() {
                               value={LOCATIONS.find(
                                 (option) => option.value === field.value
                               )}
-                              onChange={(selectedOption) => {
-                                field.onChange(selectedOption?.value);
-                              }}
-                              isRequired
+                              onChange={(selected) =>
+                                field.onChange(selected?.value)
+                              }
                               placeholder="Chọn điểm đi"
+                              isRequired
                             />
                           </FormControl>
                         </FormItem>
                       )}
                     />
 
+             
                     <FormField
                       control={form.control}
                       name="destination"
                       render={({ field }) => (
-                        <FormItem className="w-full">
+                        <FormItem>
                           <FormControl>
                             <ReactSelect
                               icon={<MapPin size={18} color="#000" />}
@@ -104,11 +112,11 @@ export default function Home() {
                               value={LOCATIONS.find(
                                 (option) => option.value === field.value
                               )}
-                              onChange={(selectedOption) => {
-                                field.onChange(selectedOption?.value);
-                              }}
-                              isRequired
+                              onChange={(selected) =>
+                                field.onChange(selected?.value)
+                              }
                               placeholder="Chọn điểm đến"
+                              isRequired
                             />
                           </FormControl>
                         </FormItem>
@@ -116,33 +124,33 @@ export default function Home() {
                     />
                   </div>
 
-                  <FormField
-                    control={form.control}
-                    name="dateStart"
-                    render={({ field }) => (
-                      <FormItem className="w-full">
-                        <FormControl>
-                          <DatePicker
-                            selected={field.value}
-                            onChange={(x) => field.onChange(x)}
-                            className="w-full h-[45px]"
-                          />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
+           
+                  <div className="w-full">
+                    <FormField
+                      control={form.control}
+                      name="dateStart"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormControl>
+                            <DatePicker
+                              selected={field.value}
+                              onChange={(date) => field.onChange(date)}
+                              className="w-full h-[45px]"
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                  </div>
 
-                  <Button className="h-[45px]">
-                    <Search /> Tìm kiếm
-                  </Button>
+                  <div className="flex justify-center">
+                    <Button className="h-[45px] rounded-3xl w-full laptop:w-1/3 bg-darkBurgundy hover:bg-darkBurgundyHover">
+                      <Search className="mr-2" /> Tìm chuyến xe
+                    </Button>
+                  </div>
                 </form>
               </Form>
             </div>
-          </div>
-          <div className="flex flex-col gap-5 tablet:w-[500px] items-center laptop:items-start">
-            <h3 className="text-center laptop:text-left text-3xl laptop:text-4xl uppercase font-bold  ">
-              Đặt vé trực tuyến tiện lợi, an toàn và dễ dàng.
-            </h3>
           </div>
         </div>
       </div>

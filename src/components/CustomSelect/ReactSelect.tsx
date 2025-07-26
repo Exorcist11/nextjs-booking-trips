@@ -1,16 +1,9 @@
 "use client";
 
 import React, { useId } from "react";
-import dynamic from "next/dynamic";
+import Select from "react-select";
 import { Label } from "../ui/label";
 import { StylesConfig, components } from "react-select";
-
-const Select = dynamic(
-  () => import("react-select").then((mod) => mod.default),
-  {
-    ssr: false,
-  }
-);
 
 export type OptionsSelect = {
   value: string;
