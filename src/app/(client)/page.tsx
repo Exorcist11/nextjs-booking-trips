@@ -138,7 +138,7 @@ export default function Home() {
                   </div>
 
                   <div className="flex justify-center">
-                    <Button className="h-[45px] rounded-3xl w-full laptop:w-1/3 bg-darkBurgundy hover:bg-darkBurgundyHover">
+                    <Button className="h-[45px] rounded-3xl w-full laptop:w-1/3 bg-darkBurgundy hover:bg-darkBurgundyHover cursor-pointer">
                       <Search className="mr-2" /> Tìm chuyến xe
                     </Button>
                   </div>

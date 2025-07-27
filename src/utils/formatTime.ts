@@ -63,9 +63,11 @@ export const formatDurationWithDateFns = (
 };
 
 export const calculateArrivalTime = (
-  departureTime: string, // "05:00"
-  durationMinutes: number // 240
+  departureTime?: string, // "05:00"
+  durationMinutes?: number // 240
 ): string => {
+  if (!departureTime || typeof durationMinutes !== "number") return "N/A";
+
   const baseDate = new Date(); // Dùng ngày hôm nay
   const departureDate = parse(departureTime, "HH:mm", baseDate);
 
@@ -83,3 +85,10 @@ export const formatDurationReadable = (minutes: number): string => {
 
   return [hourText, minuteText].filter(Boolean).join(" ");
 };
+
+export function formatMinutesToHourMinute(minutes: number): string {
+  const hours = Math.floor(minutes / 60);
+  const mins = minutes % 60;
+  return `${hours}h${mins.toString().padStart(2, "0")}'`;
+}
+

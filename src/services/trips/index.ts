@@ -30,3 +30,15 @@ export const getClientTrips = async (params: IParamsTripDaily) => {
     throw error;
   }
 };
+
+export const getTripDetail = async (id: string) => {
+  try {
+    const response = await axiosInstance({
+      method: "GET",
+      url: `${URL_PATHS.TRIPS}/${id}`,
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

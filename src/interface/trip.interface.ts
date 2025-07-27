@@ -54,3 +54,23 @@ export interface ITripResponse {
   updatedAt: string;
   status: string;
 }
+type seat = {
+  id: string;
+  isBooked: boolean;
+}
+export interface ITripDetail {
+  tripId: string;
+  startLocation: string;
+  endLocation: string;
+  departureTime: string;
+  date: string;
+  duration: number;
+  price: number;
+  status: string;
+  note: string;
+  availableSeats: number;
+  bookedSeats: string[];
+  seats: seat[];
+  seatLayout: string;
+  carInfo: ICarTripResponse;
+}

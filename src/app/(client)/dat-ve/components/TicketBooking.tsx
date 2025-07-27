@@ -5,7 +5,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import SelectSeatDialog from "@/components/Dialog/SelectSeatDialog";
 import { useSearchParams } from "next/navigation";
 import { decodeURLParam } from "@/utils/urlHelpers";
 import { getClientTrips } from "@/services/trips";
@@ -14,9 +13,10 @@ import TripItem from "./TripItem";
 import SearchTrip from "./SearchTrip";
 import useLoadingStore from "@/hooks/useLoading";
 import LoadingWrapper from "@/components/Loading/LoadingWrapper";
+import SelectSeatDialog from "@/components/Dialog/SelectSeatDialog";
 
 export default function TicketBooking() {
-  const [open, setOpen] = React.useState<boolean>(false);
+  const [open, setOpen] = React.useState<string>('');
   const { stopLoading, loading, startLoading } = useLoadingStore();
   const [trips, setTrips] = React.useState<ITripResponse[]>([]);
 
@@ -69,7 +69,7 @@ export default function TicketBooking() {
             {trips.map((item, index) => (
               <TripItem
                 index={index}
-                onSelect={() => setOpen(true)}
+                onSelect={() => setOpen(item.id)}
                 trip={item}
                 key={index}
               />
