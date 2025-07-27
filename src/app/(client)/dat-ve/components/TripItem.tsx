@@ -1,12 +1,8 @@
 import { ITripResponse } from "@/interface/trip.interface";
-import {
-  calculateArrivalTime,
-  formatDurationWithDateFns,
-} from "@/utils/urlHelpers";
-import { ArrowRight, Bus, Ticket } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
-import { cx } from "class-variance-authority";
+import { formatPhoneNumber } from "@/utils/formatPhoneNumber";
+import { calculateArrivalTime, formatDurationWithDateFns } from "@/utils/formatTime";
+
+import { BusFront } from "lucide-react";
 
 interface TripItemProps {
   trip: ITripResponse;
@@ -18,56 +14,74 @@ export default function TripItem(props: TripItemProps) {
   const { trip, index, onSelect } = props;
   return (
     <div
-      className={cx("border rounded-lg p-6", index % 2 !== 0 && "bg-[#f7f7f7]")}
+      key={index}
+      className="relative bg-white rounded-xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-all overflow-hidden"
     >
-      <div className="border-b grid grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3 gap-2 pb-4 ">
-        <div className="col-span-1 flex flex-col gap-1">
-          <h3 className="font-bold text-lg uppercase">Vận tải đông lý</h3>
-          <div className="flex items-center gap-2">
-            <Bus size={20} />
-            <p>{`Xe ${trip.car.seatingCapacity} chỗ`}</p>
+      {/* Notches */}
+      <div className="absolute top-1/2 -left-2 w-5 h-5 bg-background rounded-full shadow-inner -translate-y-1/2"></div>
+      <div className="absolute top-1/2 -right-2 w-5 h-5 bg-background rounded-full shadow-inner -translate-y-1/2"></div>
+
+      {/* Header */}
+      <div className="bg-darkBurgundy text-white flex justify-between items-center px-5 py-3">
+        <div className="text-lg font-bold">
+          {trip?.departureTime} -{" "}
+          {calculateArrivalTime(trip?.departureTime, Number(trip?.duration))}
+        </div>
+        <a
+          href={`tel:${trip?.car?.phoneNumber}`}
+          className="bg-white/20 px-3 py-1 rounded-full text-sm text-white"
+        >
+          Hotline: {formatPhoneNumber(trip?.car?.phoneNumber)}
+        </a>
+      </div>
+
+      {/* Body */}
+      <div className="relative px-5 py-6">
+        {/* Răng cưa */}
+        <div className="absolute top-0 left-0 right-0 h-2 bg-[linear-gradient(45deg,transparent_33.333%,white_33.333%,white_66.667%,transparent_66.667%),linear-gradient(-45deg,transparent_33.333%,white_33.333%,white_66.667%,transparent_66.667%)] bg-[length:20px_20px] -translate-y-full" />
+
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-2">
+          <div className="text-center flex-1">
+            <div className="font-semibold">{trip?.startLocation}</div>
+            <div className="text-sm text-mediumGray">{trip?.departureTime}</div>
+          </div>
+          <div className="text-center flex justify-center">
+            <BusFront size={28} color="#C00023" />
+          </div>
+          <div className="text-center flex-1">
+            <div className="font-semibold">{trip?.endLocation}</div>
+            <div className="text-sm text-mediumGray">
+              {calculateArrivalTime(
+                trip?.departureTime,
+                Number(trip?.duration)
+              )}
+            </div>
           </div>
         </div>
-        <div className="col-span-1 flex gap-9 items-center w-full">
-          <div className="flex flex-col gap-2 tablet:items-center">
-            <h3 className="font-bold text-lg">{trip.departureTime} AM</h3>
-            <p>{trip.startLocation}</p>
-          </div>
-          <div className="flex flex-col gap-2 justify-center items-center">
-            <ArrowRight color="blue" />
-            <p>{formatDurationWithDateFns(Number(trip.duration), "HH:mm")}</p>
-          </div>
-          <div className="flex flex-col gap-2 tablet:items-center">
-            <h3 className="font-bold text-lg">
-              {calculateArrivalTime(trip.departureTime, Number(trip.duration))}{" "}
-              AM
-            </h3>
-            <p>{trip.endLocation}</p>
-          </div>
-        </div>
-        <div className="col-span-1 tablet:col-span-2 laptop:col-span-1 flex flex-col gap-2 tablet:flex-row tablet:justify-between tablet:items-center">
-          <h3 className="font-bold text-lg w-1/2">
-            {trip.price.toLocaleString()} VND
-          </h3>
-          <Button className="tablet:w-1/2" onClick={onSelect}>
-            <Ticket /> Đặt vé ngay
-          </Button>
+
+        <div className="text-center text-sm text-mediumGray">
+          Thời gian di chuyển:{" "}
+          {formatDurationWithDateFns(Number(trip?.duration))}
         </div>
       </div>
-      <div className="pt-4">
-        <div className="flex flex-col justify-center items-center">
-          <p className="text-xs font-semibold">
-            Còn{" "}
-            <span className="text-red-500">
-              {trip.car.seatingCapacity - trip.bookedSeats.length}
-            </span>
-            /{trip.car.seatingCapacity} chỗ
-          </p>
-          <Progress
-            value={(trip.bookedSeats.length / trip.car.seatingCapacity) * 100}
-            className="w-[60%] [&>div]:bg-gradient-to-r [&>div]:from-cyan-400 [&>div]:via-sky-500 [&>div]:to-indigo-500 [&>div]:rounded-l-full"
-          />
+
+      {/* Footer */}
+      <div className="flex justify-between items-center px-5 py-3 border-t border-dashed border-border">
+        <div>
+          <div className="text-xl font-bold text-primary">
+            {trip?.price.toLocaleString("vi-VN")} VND
+          </div>
+          <div className="text-sm text-mediumGray">
+            Còn {trip?.availableSeats.length} ghế trống
+          </div>
         </div>
+        <button
+          className="bg-darkBurgundy text-white px-5 py-2 rounded-full font-semibold hover:bg-darkBurgundyHover transition"
+          type="button"
+          onClick={onSelect}
+        >
+          Đặt vé
+        </button>
       </div>
     </div>
   );

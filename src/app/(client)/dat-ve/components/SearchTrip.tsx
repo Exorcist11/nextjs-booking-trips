@@ -29,7 +29,7 @@ export default function SearchTrip({ form }: ISearchTrip) {
     router.push(`/dat-ve?${searchParams.toString()}`);
   };
   return (
-    <div className="border rounded-lg bg-white p-4 w-full">
+    <div className="border rounded-lg bg-white px-5 py-3 w-full">
       <Form {...form}>
         <form
           className="grid grid-cols-1 gap-5"
@@ -97,7 +97,7 @@ export default function SearchTrip({ form }: ISearchTrip) {
             )}
           />
 
-          <Button className="h-[45px] font-bold">
+          <Button className="h-[45px] font-bold bg-darkBurgundy hover:bg-darkBurgundyHover">
             <Search /> Tìm kiếm
           </Button>
         </form>

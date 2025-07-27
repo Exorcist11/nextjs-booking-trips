@@ -7,13 +7,12 @@ import { z } from "zod";
 
 import SelectSeatDialog from "@/components/Dialog/SelectSeatDialog";
 import { useSearchParams } from "next/navigation";
-import { decodeURLParam, formatDurationWithDateFns } from "@/utils/urlHelpers";
+import { decodeURLParam } from "@/utils/urlHelpers";
 import { getClientTrips } from "@/services/trips";
 import { IParamsTripDaily, ITripResponse } from "@/interface/trip.interface";
 import TripItem from "./TripItem";
 import SearchTrip from "./SearchTrip";
 import useLoadingStore from "@/hooks/useLoading";
-import { Loader2 } from "lucide-react";
 import LoadingWrapper from "@/components/Loading/LoadingWrapper";
 
 export default function TicketBooking() {
@@ -42,7 +41,7 @@ export default function TicketBooking() {
       endLocation: decodeURLParam(rawEndLocation),
       date: rawDate ?? "",
       page: 1,
-      limit: 10,
+      limit: 20,
     };
     startLoading();
     try {
@@ -61,7 +60,7 @@ export default function TicketBooking() {
 
   return (
     <LoadingWrapper loading={loading}>
-      <div className="min-h-screen pt-20 laptop:pt-16">
+      <div className="min-h-screen pt-20 laptop:pt-16 mb-16">
         <div className="flex-col gap-10 max-w-screen-xl mx-auto px-4 flex laptop:gap-5 laptop:flex-row laptop:mt-10 ">
           <div className="laptop:w-2/6 laptop:sticky laptop:top-20 h-fit">
             <SearchTrip form={form} />

@@ -32,8 +32,6 @@ export default function Home() {
   });
 
   const onSubmit = async (data: z.infer<typeof findTicketSchema>) => {
-    const timeZone = "Asia/Ho_Chi_Minh";
-
     const searchParams = new URLSearchParams({
       startLocation: data.departure,
       endLocation: data.destination,
@@ -67,15 +65,13 @@ export default function Home() {
               Đặt vé nhanh – Đi xe xịn – An tâm trên từng chặng đường
             </h3>
 
-            <div className="w-full max-w-[900px] p-5 laptop:p-8 rounded-lg bg-zinc-100/20 backdrop-blur shadow-[0_3px_10px_rgb(0,0,0,0.2)] mx-auto">
+            <div className="w-full max-w-[900px] p-5 laptop:p-8 rounded-xl bg-zinc-100/20 backdrop-blur shadow-[0_3px_10px_rgb(0,0,0,0.2)] mx-auto">
               <Form {...form}>
                 <form
                   onSubmit={form.handleSubmit(onSubmit)}
                   className="flex flex-col gap-6"
                 >
-          
                   <div className="grid grid-cols-1 tablet:grid-cols-2 gap-4">
-            
                     <FormField
                       control={form.control}
                       name="departure"
@@ -99,7 +95,6 @@ export default function Home() {
                       )}
                     />
 
-             
                     <FormField
                       control={form.control}
                       name="destination"
@@ -124,7 +119,6 @@ export default function Home() {
                     />
                   </div>
 
-           
                   <div className="w-full">
                     <FormField
                       control={form.control}

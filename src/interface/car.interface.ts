@@ -20,4 +20,5 @@ export interface ICarTripResponse {
   mainDriver: string;
   seats: string[];
   seatingCapacity: number;
+  phoneNumber: string
 }
